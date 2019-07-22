@@ -1,14 +1,12 @@
 <template>
   <v-stepper v-model="currentStep" vertical>
-    <v-stepper-step editable :complete="currentStep > 1" step="1">
-      Contact Details
-    </v-stepper-step>
+    <v-stepper-step editable :complete="currentStep > 1" step="1">Contact Details</v-stepper-step>
 
     <v-stepper-content step="1">
-      <v-card class="mb-5" flat>
+      <v-card class="mb-3" flat>
         <v-form v-model="valid">
-          <v-container>
-            <v-layout>
+          <v-container fluid>
+            <v-layout wrap>
               <v-flex xs12 md6>
                 <v-text-field
                   v-model="contactDetails.name"
@@ -65,27 +63,20 @@
                   <template v-slot:activator="{ on }">
                     <v-text-field
                       v-model="contactDetails.birthdate"
-                      label="Picker in menu"
+                      label="Birthday"
                       prepend-icon="event"
                       readonly
                       v-on="on"
                     ></v-text-field>
                   </template>
-                  <v-date-picker
-                    v-model="contactDetails.birthdate"
-                    no-title
-                    scrollable
-                  >
+                  <v-date-picker v-model="contactDetails.birthdate" no-title scrollable>
                     <v-spacer></v-spacer>
-                    <v-btn flat color="primary" @click="menu = false"
-                      >Cancel</v-btn
-                    >
+                    <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
                     <v-btn
                       flat
                       color="primary"
                       @click="$refs.menu.save(contactDetails.birthdate)"
-                      >OK</v-btn
-                    >
+                    >OK</v-btn>
                   </v-date-picker>
                 </v-menu>
               </v-flex>
@@ -93,18 +84,16 @@
           </v-container>
         </v-form>
       </v-card>
-      <v-btn color="success" @click="currentStep = 2">Continue</v-btn>
+      <v-btn block color="success" @click="currentStep = 2">Continue</v-btn>
     </v-stepper-content>
 
-    <v-stepper-step editable :complete="currentStep > 2" step="2">
-      Company Details
-    </v-stepper-step>
+    <v-stepper-step editable :complete="currentStep > 2" step="2">Company Details</v-stepper-step>
 
     <v-stepper-content step="2">
-      <v-card class="mb-5" flat>
+      <v-card class="mb-3" flat>
         <v-form v-model="valid">
-          <v-container>
-            <v-layout>
+          <v-container fluid>
+            <v-layout wrap>
               <v-flex xs12 md6>
                 <v-text-field
                   v-model="companyDetails.companyName"
@@ -216,159 +205,200 @@
           </v-container>
         </v-form>
       </v-card>
-      <v-btn color="success" @click="currentStep = 3">Continue</v-btn>
+      <v-btn block color="success" @click="currentStep = 3">Continue</v-btn>
     </v-stepper-content>
 
-    <v-stepper-step editable :complete="currentStep > 3" step="3">
-      Select Plan
-    </v-stepper-step>
+    <v-stepper-step editable :complete="currentStep > 3" step="3">Select Plan</v-stepper-step>
 
     <v-stepper-content step="3">
-      <v-card class="mb-5" flat>
-        <v-layout>
-          <v-flex>
-            <v-btn block color="success" @click="currentStep = 5">
-              Free
-            </v-btn>
+      <v-card class="mb-3" flat>
+        <v-layout wrap>
+          <v-flex xs12 md3 text-xs-center>
+            <v-btn block color="success" large @click="handleFree">Free</v-btn>
           </v-flex>
-        </v-layout>
-        <v-layout>
-          <v-flex>
-            <v-btn block color="warning" @click="currentStep = 4">
-              Plan A
-            </v-btn>
+          <v-spacer></v-spacer>
+          <v-flex xs12 md3 text-xs-center>
+            <v-btn block color="warning" large @click="handlePlanA">Plan A</v-btn>
           </v-flex>
-        </v-layout>
-        <v-layout>
-          <v-flex>
-            <v-btn block color="error" @click="currentStep = 4">
-              Plan B
-            </v-btn>
+          <v-spacer></v-spacer>
+          <v-flex xs12 md3 text-xs-center>
+            <v-btn block color="error" large @click="handlePlanB">Plan B</v-btn>
           </v-flex>
         </v-layout>
       </v-card>
     </v-stepper-content>
 
-    <v-stepper-step step="4">
-      Payment
-    </v-stepper-step>
+    <v-stepper-step step="4">Payment</v-stepper-step>
     <v-stepper-content step="4">
-      <v-card color="grey lighten-1" class="mb-5" height="200px"></v-card>
-      <v-btn color="primary" @click="currentStep = 5">Continue</v-btn>
-      <v-btn flat>Cancel</v-btn>
+      <v-card class="mb-3" flat>
+        <h3>Come vuoi ricevere la fattura?</h3>
+        <v-layout>
+          <v-flex>
+            <v-radio-group v-model="payment.whereTo">
+              <v-radio label="Option 1" value="option1"></v-radio>
+              <v-radio label="Option 2" value="option2"></v-radio>
+            </v-radio-group>
+          </v-flex>
+        </v-layout>
+        <h3>Info Pay</h3>
+        <v-radio-group v-model="payment.infopay">
+          <v-radio label="Paypal" value="paypal"></v-radio>
+          <v-radio label="Stripe" value="stripe"></v-radio>
+        </v-radio-group>
+      </v-card>
+      <v-btn color="success" @click="currentStep = 5">Continue</v-btn>
     </v-stepper-content>
 
-    <v-stepper-step editable step="5">
-      Company Logo
-    </v-stepper-step>
+    <v-stepper-step editable step="5">Company Logo</v-stepper-step>
     <v-stepper-content step="5">
-      <v-card flat class="mb-5">
-        <v-btn v-if="!imgDataUrl" @click="toggleShow">Set avatar</v-btn>
-        <my-upload
-          field="img"
-          @crop-success="cropSuccess"
-          @crop-upload-success="cropUploadSuccess"
-          @crop-upload-fail="cropUploadFail"
-          v-model="show"
-          langType="en"
-          :width="300"
-          :height="300"
-          :params="params"
-          :headers="headers"
-          img-format="jpg"
-        ></my-upload>
-        <img v-if="imgDataUrl" @click="toggleShow" :src="imgDataUrl" />
+      <v-card flat class="mb-3">
+        <vue-core-image-upload
+          class="btn btn-primary"
+          crop="local"
+          :isXhr="false"
+          @imagechanged="imagechanged"
+          @imageuploading="imageuploading"
+          @imageuploaded="imageuploaded"
+          :max-file-size="5242880"
+        >
+          <v-btn color="primary" type="file">Upload Image</v-btn>
+        </vue-core-image-upload>
+        <v-card-text>
+          <v-avatar v-if="src" color="grey lighten-4" class="mb-3" size="90">
+            <img :src="src" alt="avatar" />
+          </v-avatar>
+          <!-- <img v-if="src" :src="src" /> -->
+          <p v-if="file">{{ file.name }}</p>
+        </v-card-text>
       </v-card>
       <v-btn color="success" @click="currentStep = 6">Continue</v-btn>
       <v-btn color="primary" flat @click="currentStep = 6">Skip</v-btn>
     </v-stepper-content>
 
-    <v-stepper-step step="6">
-      Resume
-    </v-stepper-step>
+    <v-stepper-step editable step="6">Resume</v-stepper-step>
     <v-stepper-content step="6">
-      <v-card class="mb-5">
-        <!-- <div class="d-flex justify-between align-center mb-3">
-          <v-btn @click="all">all</v-btn>
-          <v-btn @click="none">none</v-btn>
-        </div> -->
+      <v-layout align-center justify-center>
+        <v-flex style="text-align:center;">
+          <v-avatar v-if="src" color="grey lighten-4" class="mb-3" size="90">
+            <img :src="src" alt="avatar" />
+          </v-avatar>
+        </v-flex>
+      </v-layout>
 
-        <v-expansion-panel v-model="panel" expand>
-          <v-expansion-panel-content>
-            <template v-slot:header>
-              <div>Contact Details</div>
-            </template>
-            <v-card flat>
-              <v-card-text
-                >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat.</v-card-text
-              >
-            </v-card>
-          </v-expansion-panel-content>
+      <h3 class="mb-3">Contact Details</h3>
+      <v-layout class="ml-3" wrap>
+        <v-flex xs12 md4>
+          <h5>First name:</h5>
+          <p>{{contactDetails.name}}</p>
 
-          <v-expansion-panel-content>
-            <template v-slot:header>
-              <div>Company Details</div>
-            </template>
-            <v-card flat>
-              <v-card-text
-                >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat.</v-card-text
-              >
-            </v-card>
-          </v-expansion-panel-content>
+          <h5>Last name:</h5>
+          <p>{{contactDetails.lastname}}</p>
+        </v-flex>
+        <v-flex xs12 md4>
+          <h5>Email:</h5>
+          <p>{{contactDetails.email}}</p>
 
-          <v-expansion-panel-content>
-            <template v-slot:header>
-              <div>Plan</div>
-            </template>
-            <v-card flat>
-              <v-card-text
-                >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat.</v-card-text
-              >
-            </v-card>
-          </v-expansion-panel-content>
+          <h5>Phone:</h5>
+          <p>{{contactDetails.phone}}</p>
+        </v-flex>
+        <v-flex xs12 md4>
+          <h5>Birthday:</h5>
+          <p>{{contactDetails.birthdate}}</p>
 
-          <v-expansion-panel-content>
-            <template v-slot:header>
-              <div>Payment</div>
-            </template>
-            <v-card flat>
-              <v-card-text
-                >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat.</v-card-text
-              >
-            </v-card>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-      </v-card>
-      <v-btn color="primary">Confirm</v-btn>
+          <h5>Codice Fiscale:</h5>
+          <p>{{contactDetails.codiceFiscale}}</p>
+        </v-flex>
+      </v-layout>
+
+      <h3 class="mb-3">Company Details</h3>
+      <v-layout class="ml-3" wrap>
+        <v-flex xs12 md4>
+          <h5>Company name:</h5>
+          <p>{{companyDetails.companyName}}</p>
+
+          <h5>P.IVA:</h5>
+          <p>{{companyDetails.piva}}</p>
+
+          <h5>PEC:</h5>
+          <p>{{companyDetails.pec}}</p>
+
+          <h5>Codice Fiscale:</h5>
+          <p>{{companyDetails.codiceFiscale}}</p>
+
+          <h5>Telefono:</h5>
+          <p>{{companyDetails.phone}}</p>
+        </v-flex>
+        <v-flex xs12 md4>
+          <h5>Numero Civico:</h5>
+          <p>{{companyDetails.numeroCivico}}</p>
+
+          <h5>Sito Web:</h5>
+          <p>{{companyDetails.website}}</p>
+
+          <h5>Indirizzo Sede Legale:</h5>
+          <p>{{companyDetails.address}}</p>
+
+          <h5>Stato:</h5>
+          <p>{{companyDetails.state}}</p>
+        </v-flex>
+        <v-flex xs12 md4>
+          <h5>Regione:</h5>
+          <p>{{companyDetails.region}}</p>
+
+          <h5>Provincia:</h5>
+          <p>{{companyDetails.province}}</p>
+
+          <h5>Città:</h5>
+          <p>{{companyDetails.city}}</p>
+
+          <h5>CAP:</h5>
+          <p>{{companyDetails.cap}}</p>
+        </v-flex>
+      </v-layout>
+
+      <h3 class="mb-3">Plan</h3>
+      <v-layout class="ml-3" wrap>
+        <v-flex xs12 md4>
+          <h5>Plan Selected</h5>
+          <p>{{planSelected}}</p>
+        </v-flex>
+      </v-layout>
+
+      <h3 class="mb-3">Payment</h3>
+      <v-layout class="ml-3" wrap>
+        <v-flex md4>
+          <h5>Come vuoi ricevere la fattura?</h5>
+          <p>{{payment.whereTo}}</p>
+
+          <h5>InfoPay</h5>
+          <p>{{payment.infopay}}</p>
+        </v-flex>
+      </v-layout>
+
+      <v-btn block class="mt-5" color="primary" @click="handleSubmit">Confirm</v-btn>
     </v-stepper-content>
   </v-stepper>
 </template>
 
 <script>
 // import PictureInput from "vue-picture-input";
-import myUpload from "vue-image-crop-upload";
-import VueCropper from "vue-cropperjs";
-import "cropperjs/dist/cropper.css";
+// import myUpload from "vue-image-crop-upload";
+// import VueCropper from "vue-cropperjs";
+// import "cropperjs/dist/cropper.css";
+import VueCoreImageUpload from "vue-core-image-upload";
+import axios from "axios";
 export default {
   components: {
     // PictureInput
-    VueCropper,
-    "my-upload": myUpload
+    // VueCropper,
+    "vue-core-image-upload": VueCoreImageUpload
+    // "my-upload": myUpload
   },
   data() {
     return {
+      formData: new FormData(),
+      file: null,
+      src: null,
       panel: [true, true, true, true],
       items: 5,
       currentStep: 1,
@@ -408,7 +438,10 @@ export default {
         pec: ""
       },
       planSelected: "",
-      payment: {},
+      payment: {
+        whereTo: null,
+        infopay: null
+      },
       imgDataUrl: "",
       params: {
         token: "123456798",
@@ -441,53 +474,109 @@ export default {
     };
   },
   methods: {
-    onChange(image) {
-      console.log("New picture selected!");
-      if (image) {
-        console.log("Picture loaded.");
-        this.image = image;
-      } else {
-        console.log("FileReader API not supported: use the <form>, Luke!");
+    handleSubmit() {
+      this.formData.set("name", this.contactDetails.name);
+      this.formData.set("lastname", this.contactDetails.lastname);
+      this.formData.set("email", this.contactDetails.email);
+      this.formData.set("phone", this.contactDetails.phone);
+      this.formData.set("codiceFiscale", this.contactDetails.codiceFiscale);
+      this.formData.set("birthdate", this.contactDetails.birthdate);
+      this.formData.set("companyName", this.companyDetails.companyName);
+      this.formData.set("piva", this.companyDetails.piva);
+      this.formData.set(
+        "companyCodiceFiscale",
+        this.companyDetails.codiceFiscale
+      );
+      this.formData.set("state", this.companyDetails.state);
+      this.formData.set("region", this.companyDetails.region);
+      this.formData.set("province", this.companyDetails.province);
+      this.formData.set("city", this.companyDetails.city);
+      this.formData.set("address", this.companyDetails.address);
+      this.formData.set("numeroCivico", this.companyDetails.numeroCivico);
+      this.formData.set("cap", this.companyDetails.cap);
+      this.formData.set("website", this.companyDetails.website);
+      this.formData.set("pec", this.companyDetails.pec);
+      this.formData.set("planSelected", this.planSelected);
+      this.formData.set("whereTo", this.payment.whereTo);
+      this.formData.set("infoPay", this.payment.infoPay);
+      this.formData.append("file0", this.file, this.file.name);
+
+      axios
+        .post(
+          window.location.hostname !== "localhost"
+            ? "//demo.condivision.cloud/fl_api/registerApi.php"
+            : "http://localhost:80/register-form/registerApi.php",
+          this.formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
+          }
+        )
+        .then(function(response) {
+          console.log("saved successfully");
+          console.log(response.data);
+        });
+    },
+    handleFree() {
+      this.planSelected = "Free";
+      this.currentStep = 5;
+    },
+    handlePlanA() {
+      this.planSelected = "Plan A";
+      this.currentStep = 4;
+    },
+    handlePlanB() {
+      this.planSelected = "Plan B";
+      this.currentStep = 4;
+    },
+    imagechanged(res) {
+      this.src = res;
+      let base64ImageContent = res.replace(
+        /^data:image\/(png|jpg|jpeg);base64,/,
+        ""
+      );
+      let blob = this.base64ToBlob(base64ImageContent, "image/jpeg");
+      console.log("blob", blob);
+      this.formData.set("picture", blob);
+      console.log("imagechanged", this.formData);
+    },
+    base64ToBlob(base64, mime) {
+      mime = mime || "";
+      var sliceSize = 1024;
+      var byteChars = window.atob(base64);
+      var byteArrays = [];
+
+      for (
+        var offset = 0, len = byteChars.length;
+        offset < len;
+        offset += sliceSize
+      ) {
+        var slice = byteChars.slice(offset, offset + sliceSize);
+
+        var byteNumbers = new Array(slice.length);
+        for (var i = 0; i < slice.length; i++) {
+          byteNumbers[i] = slice.charCodeAt(i);
+        }
+
+        var byteArray = new Uint8Array(byteNumbers);
+
+        byteArrays.push(byteArray);
       }
+
+      return new Blob(byteArrays, { type: mime });
     },
-    toggleShow() {
-      this.show = !this.show;
+    imageuploading(res) {
+      this.file = res;
+      // var reader = new FileReader();
+
+      // this.src = URL.createObjectURL(res);
+      // // console.log("file", result);
+      console.log("imageuploading", res);
     },
-    /**
-     * crop success
-     *
-     * [param] imgDataUrl
-     * [param] field
-     */
-    cropSuccess(imgDataUrl, field) {
-      console.log("-------- crop success --------");
-      this.imgDataUrl = imgDataUrl;
-      console.log("image", this.imgDataUrl);
+    imageuploaded(res) {
+      console.log("imageuploaded", res);
     },
-    /**
-     * upload success
-     *
-     * [param] jsonData  server api return data, already json encode
-     * [param] field
-     */
-    cropUploadSuccess(jsonData, field) {
-      console.log("-------- upload success --------");
-      console.log(jsonData);
-      console.log("field: " + field);
-    },
-    /**
-     * upload fail
-     *
-     * [param] status    server api return error status, like 500
-     * [param] field
-     */
-    cropUploadFail(status, field) {
-      console.log("-------- upload fail --------");
-      console.log(status);
-      console.log("field: " + field);
-    },
-    // Create an array the length of our items
-    // with all values as true
     all() {
       this.panel = [...Array(this.items).keys()].map(_ => true);
     },
