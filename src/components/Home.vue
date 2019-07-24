@@ -1,383 +1,399 @@
 <template>
-  <v-stepper v-model="currentStep" vertical>
-    <v-stepper-step editable :complete="currentStep > 1" step="1">Contact Details</v-stepper-step>
+  <v-container>
+    <v-stepper v-model="currentStep" vertical>
+      <v-stepper-step editable :complete="currentStep > 1" step="1">Contact Details</v-stepper-step>
 
-    <v-stepper-content step="1">
-      <v-card class="mb-3" flat>
-        <v-form v-model="valid">
-          <v-container fluid>
-            <v-layout wrap>
-              <v-flex xs12 md6>
-                <v-text-field
-                  v-model="contactDetails.name"
-                  :rules="nameRules"
-                  prepend-icon="mdi-account"
-                  label="First name"
-                  required
-                ></v-text-field>
-                <v-text-field
-                  v-model="contactDetails.lastname"
-                  :rules="nameRules"
-                  prepend-icon="mdi-account"
-                  label="Last name"
-                  required
-                ></v-text-field>
-                <v-text-field
-                  v-model="contactDetails.email"
-                  :rules="emailRules"
-                  prepend-icon="mdi-email"
-                  label="E-mail"
-                  required
-                ></v-text-field>
-              </v-flex>
+      <v-stepper-content step="1">
+        <v-card class="mb-3" flat>
+          <v-form v-model="valid">
+            <v-container fluid>
+              <v-layout wrap>
+                <v-flex xs12 md6>
+                  <v-text-field
+                    v-model="contactDetails.name"
+                    :rules="nameRules"
+                    prepend-icon="mdi-account"
+                    label="First name"
+                    required
+                  ></v-text-field>
+                  <v-text-field
+                    v-model="contactDetails.lastname"
+                    :rules="nameRules"
+                    prepend-icon="mdi-account"
+                    label="Last name"
+                    required
+                  ></v-text-field>
+                  <v-text-field
+                    v-model="contactDetails.email"
+                    :rules="emailRules"
+                    prepend-icon="mdi-email"
+                    label="E-mail"
+                    required
+                  ></v-text-field>
+                </v-flex>
 
-              <v-flex xs12 md6>
-                <v-text-field
-                  v-model="contactDetails.phone"
-                  :rules="emailRules"
-                  prepend-icon="mdi-cellphone"
-                  label="Phone"
-                  required
-                ></v-text-field>
+                <v-flex xs12 md6>
+                  <v-text-field
+                    v-model="contactDetails.phone"
+                    :rules="emailRules"
+                    prepend-icon="mdi-cellphone"
+                    label="Phone"
+                    required
+                  ></v-text-field>
 
-                <v-text-field
-                  v-model="contactDetails.codiceFiscale"
-                  :rules="emailRules"
-                  prepend-icon="mdi-account-card-details"
-                  label="Codice Fiscale"
-                  required
-                ></v-text-field>
+                  <v-text-field
+                    v-model="contactDetails.codiceFiscale"
+                    :rules="emailRules"
+                    prepend-icon="mdi-account-card-details"
+                    label="Codice Fiscale"
+                    required
+                  ></v-text-field>
 
-                <v-menu
-                  ref="menu"
-                  v-model="menu"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  :return-value.sync="contactDetails.birthdate"
-                  lazy
-                  transition="scale-transition"
-                  offset-y
-                  full-width
-                  min-width="290px"
-                >
-                  <template v-slot:activator="{ on }">
-                    <v-text-field
-                      v-model="contactDetails.birthdate"
-                      label="Birthday"
-                      prepend-icon="event"
-                      readonly
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker v-model="contactDetails.birthdate" no-title scrollable>
-                    <v-spacer></v-spacer>
-                    <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
-                    <v-btn
-                      flat
-                      color="primary"
-                      @click="$refs.menu.save(contactDetails.birthdate)"
-                    >OK</v-btn>
-                  </v-date-picker>
-                </v-menu>
-              </v-flex>
-            </v-layout>
-          </v-container>
-        </v-form>
-      </v-card>
-      <v-btn block color="success" @click="currentStep = 2">Continue</v-btn>
-    </v-stepper-content>
+                  <v-menu
+                    ref="menu"
+                    v-model="menu"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    :return-value.sync="contactDetails.birthdate"
+                    lazy
+                    transition="scale-transition"
+                    offset-y
+                    full-width
+                    min-width="290px"
+                  >
+                    <template v-slot:activator="{ on }">
+                      <v-text-field
+                        v-model="contactDetails.birthdate"
+                        label="Birthday"
+                        prepend-icon="event"
+                        readonly
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker v-model="contactDetails.birthdate" no-title scrollable>
+                      <v-spacer></v-spacer>
+                      <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
+                      <v-btn
+                        flat
+                        color="primary"
+                        @click="$refs.menu.save(contactDetails.birthdate)"
+                      >OK</v-btn>
+                    </v-date-picker>
+                  </v-menu>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-form>
+        </v-card>
+        <v-btn block color="success" @click="currentStep = 2">Continue</v-btn>
+      </v-stepper-content>
 
-    <v-stepper-step editable :complete="currentStep > 2" step="2">Company Details</v-stepper-step>
+      <v-stepper-step editable :complete="currentStep > 2" step="2">Company Details</v-stepper-step>
 
-    <v-stepper-content step="2">
-      <v-card class="mb-3" flat>
-        <v-form v-model="valid">
-          <v-container fluid>
-            <v-layout wrap>
-              <v-flex xs12 md6>
-                <v-text-field
-                  v-model="companyDetails.companyName"
-                  :rules="nameRules"
-                  prepend-icon="mdi-account"
-                  label="Company Name"
-                  required
-                ></v-text-field>
+      <v-stepper-content step="2">
+        <v-card class="mb-3" flat>
+          <v-form v-model="valid">
+            <v-container fluid>
+              <v-layout wrap>
+                <v-flex xs12 md6>
+                  <v-text-field
+                    v-model="companyDetails.companyName"
+                    :rules="nameRules"
+                    prepend-icon="mdi-account"
+                    label="Company Name"
+                    required
+                  ></v-text-field>
 
-                <v-text-field
-                  v-model="companyDetails.piva"
-                  :rules="nameRules"
-                  prepend-icon="mdi-file-document-box"
-                  label="P.IVA"
-                  required
-                ></v-text-field>
+                  <v-text-field
+                    v-model="companyDetails.piva"
+                    :rules="nameRules"
+                    prepend-icon="mdi-file-document-box"
+                    label="P.IVA"
+                    required
+                  ></v-text-field>
 
-                <v-text-field
-                  v-model="companyDetails.codiceFiscale"
-                  :rules="nameRules"
-                  prepend-icon="mdi-file-document-box"
-                  label="Codice Fiscale"
-                  required
-                ></v-text-field>
+                  <v-text-field
+                    v-model="companyDetails.codiceFiscale"
+                    :rules="nameRules"
+                    prepend-icon="mdi-file-document-box"
+                    label="Codice Fiscale"
+                    required
+                  ></v-text-field>
 
-                <v-text-field
-                  v-model="companyDetails.numeroCivico"
-                  :rules="emailRules"
-                  prepend-icon="mdi-counter"
-                  label="Numero Civico"
-                  required
-                ></v-text-field>
+                  <v-text-field
+                    v-model="companyDetails.numeroCivico"
+                    :rules="emailRules"
+                    prepend-icon="mdi-counter"
+                    label="Numero Civico"
+                    required
+                  ></v-text-field>
 
-                <v-text-field
-                  v-model="companyDetails.phone"
-                  :rules="emailRules"
-                  prepend-icon="mdi-phone"
-                  label="Telefono"
-                  required
-                ></v-text-field>
+                  <v-text-field
+                    v-model="companyDetails.phone"
+                    :rules="emailRules"
+                    prepend-icon="mdi-phone"
+                    label="Telefono"
+                    required
+                  ></v-text-field>
 
-                <v-text-field
-                  v-model="companyDetails.website"
-                  :rules="emailRules"
-                  prepend-icon="mdi-web"
-                  label="Sito Web"
-                  required
-                ></v-text-field>
+                  <v-text-field
+                    v-model="companyDetails.website"
+                    :rules="emailRules"
+                    prepend-icon="mdi-web"
+                    label="Sito Web"
+                    required
+                  ></v-text-field>
 
-                <v-text-field
-                  v-model="companyDetails.pec"
-                  :rules="emailRules"
-                  prepend-icon="mdi-email"
-                  label="PEC"
-                  required
-                ></v-text-field>
-              </v-flex>
+                  <v-text-field
+                    v-model="companyDetails.pec"
+                    :rules="emailRules"
+                    prepend-icon="mdi-email"
+                    label="PEC"
+                    required
+                  ></v-text-field>
+                </v-flex>
 
-              <v-flex xs12 md6>
-                <v-text-field
-                  v-model="companyDetails.address"
-                  :rules="emailRules"
-                  prepend-icon="mdi-map-marker"
-                  label="Indirizzo Sede Legale"
-                  required
-                ></v-text-field>
+                <v-flex xs12 md6>
+                  <v-text-field
+                    v-model="companyDetails.address"
+                    :rules="emailRules"
+                    prepend-icon="mdi-map-marker"
+                    label="Indirizzo Sede Legale"
+                    required
+                  ></v-text-field>
 
-                <v-text-field
-                  v-model="companyDetails.state"
-                  :rules="emailRules"
-                  prepend-icon="mdi-map-marker"
-                  label="Stato"
-                  required
-                ></v-text-field>
+                  <v-text-field
+                    v-model="companyDetails.state"
+                    :rules="emailRules"
+                    prepend-icon="mdi-map-marker"
+                    label="Stato"
+                    required
+                  ></v-text-field>
 
-                <v-text-field
-                  v-model="companyDetails.region"
-                  :rules="emailRules"
-                  prepend-icon="mdi-map-marker"
-                  label="Regione"
-                  required
-                ></v-text-field>
+                  <v-text-field
+                    v-model="companyDetails.region"
+                    :rules="emailRules"
+                    prepend-icon="mdi-map-marker"
+                    label="Regione"
+                    required
+                  ></v-text-field>
 
-                <v-text-field
-                  v-model="companyDetails.province"
-                  :rules="emailRules"
-                  prepend-icon="mdi-map-marker"
-                  label="Provincia"
-                  required
-                ></v-text-field>
+                  <v-text-field
+                    v-model="companyDetails.province"
+                    :rules="emailRules"
+                    prepend-icon="mdi-map-marker"
+                    label="Provincia"
+                    required
+                  ></v-text-field>
 
-                <v-text-field
-                  v-model="companyDetails.city"
-                  :rules="emailRules"
-                  prepend-icon="mdi-map-marker"
-                  label="Città"
-                  required
-                ></v-text-field>
+                  <v-text-field
+                    v-model="companyDetails.city"
+                    :rules="emailRules"
+                    prepend-icon="mdi-map-marker"
+                    label="Città"
+                    required
+                  ></v-text-field>
 
-                <v-text-field
-                  v-model="companyDetails.cap"
-                  :rules="emailRules"
-                  prepend-icon="mdi-map-marker"
-                  label="CAP"
-                  required
-                ></v-text-field>
-              </v-flex>
-            </v-layout>
-          </v-container>
-        </v-form>
-      </v-card>
-      <v-btn block color="success" @click="currentStep = 3">Continue</v-btn>
-    </v-stepper-content>
+                  <v-text-field
+                    v-model="companyDetails.cap"
+                    :rules="emailRules"
+                    prepend-icon="mdi-map-marker"
+                    label="CAP"
+                    required
+                  ></v-text-field>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-form>
+        </v-card>
+        <v-btn block color="success" @click="currentStep = 3">Continue</v-btn>
+      </v-stepper-content>
 
-    <v-stepper-step editable :complete="currentStep > 3" step="3">Select Plan</v-stepper-step>
+      <v-stepper-step editable :complete="currentStep > 3" step="3">Select Plan</v-stepper-step>
 
-    <v-stepper-content step="3">
-      <v-card class="mb-3" flat>
-        <v-layout wrap>
-          <v-flex xs12 md3 text-xs-center>
-            <v-btn block color="success" large @click="handleFree">Free</v-btn>
-          </v-flex>
-          <v-spacer></v-spacer>
-          <v-flex xs12 md3 text-xs-center>
-            <v-btn block color="warning" large @click="handlePlanA">Plan A</v-btn>
-          </v-flex>
-          <v-spacer></v-spacer>
-          <v-flex xs12 md3 text-xs-center>
-            <v-btn block color="error" large @click="handlePlanB">Plan B</v-btn>
+      <v-stepper-content step="3">
+        <v-card class="mb-3" flat>
+          <v-layout wrap>
+            <v-flex xs12 md3 text-xs-center>
+              <v-btn block color="success" large @click="handleFree">Free</v-btn>
+            </v-flex>
+            <v-spacer></v-spacer>
+            <v-flex xs12 md3 text-xs-center>
+              <v-btn block color="warning" large @click="handlePlanA">Plan A</v-btn>
+            </v-flex>
+            <v-spacer></v-spacer>
+            <v-flex xs12 md3 text-xs-center>
+              <v-btn block color="error" large @click="handlePlanB">Plan B</v-btn>
+            </v-flex>
+          </v-layout>
+        </v-card>
+      </v-stepper-content>
+
+      <v-stepper-step step="4">Payment</v-stepper-step>
+      <v-stepper-content step="4">
+        <v-card class="mb-3" flat>
+          <h3>Come vuoi ricevere la fattura?</h3>
+          <v-layout>
+            <v-flex>
+              <v-radio-group v-model="payment.whereTo">
+                <v-radio label="Pec" value="pec"></v-radio>
+                <v-radio label="Codice SDI" value="codice_sdi"></v-radio>
+              </v-radio-group>
+            </v-flex>
+            <v-text-field
+              v-if="payment.whereTo == 'pec'"
+              v-model="payment.pec"
+              prepend-icon="mdi-map-marker"
+              label="Inserisci PEC"
+              required
+            ></v-text-field>
+            <v-text-field
+              v-if="payment.whereTo == 'codice_sdi'"
+              v-model="payment.codice_sdi"
+              prepend-icon="mdi-map-marker"
+              label="Inserisci codice SDI"
+              required
+            ></v-text-field>
+          </v-layout>
+          <h3>Info Pay</h3>
+          <v-radio-group v-model="payment.infopay">
+            <v-radio label="Paypal" value="paypal"></v-radio>
+            <v-radio label="Stripe" value="stripe"></v-radio>
+          </v-radio-group>
+        </v-card>
+        <v-btn color="success" @click="currentStep = 5">Continue</v-btn>
+      </v-stepper-content>
+
+      <v-stepper-step editable step="5">Company Logo</v-stepper-step>
+      <v-stepper-content step="5">
+        <v-card flat class="mb-3">
+          <vue-core-image-upload
+            class="btn btn-primary"
+            crop="local"
+            :isXhr="false"
+            @imagechanged="imagechanged"
+            @imageuploading="imageuploading"
+            @imageuploaded="imageuploaded"
+            :max-file-size="5242880"
+          >
+            <v-btn color="primary" type="file">Upload Image</v-btn>
+          </vue-core-image-upload>
+          <v-card-text>
+            <v-avatar v-if="src" color="grey lighten-4" class="mb-3" size="90">
+              <img :src="src" alt="avatar" />
+            </v-avatar>
+            <!-- <img v-if="src" :src="src" /> -->
+            <p v-if="file">{{ file.name }}</p>
+          </v-card-text>
+        </v-card>
+        <v-btn color="success" @click="currentStep = 6">Continue</v-btn>
+        <v-btn color="primary" flat @click="currentStep = 6">Skip</v-btn>
+      </v-stepper-content>
+
+      <v-stepper-step editable step="6">Resume</v-stepper-step>
+      <v-stepper-content step="6">
+        <v-layout align-center justify-center>
+          <v-flex style="text-align:center;">
+            <v-avatar v-if="src" color="grey lighten-4" class="mb-3" size="90">
+              <img :src="src" alt="avatar" />
+            </v-avatar>
           </v-flex>
         </v-layout>
-      </v-card>
-    </v-stepper-content>
 
-    <v-stepper-step step="4">Payment</v-stepper-step>
-    <v-stepper-content step="4">
-      <v-card class="mb-3" flat>
-        <h3>Come vuoi ricevere la fattura?</h3>
-        <v-layout>
-          <v-flex>
-            <v-radio-group v-model="payment.whereTo">
-              <v-radio label="Option 1" value="option1"></v-radio>
-              <v-radio label="Option 2" value="option2"></v-radio>
-            </v-radio-group>
+        <h3 class="mb-3">Contact Details</h3>
+        <v-layout class="ml-3" wrap>
+          <v-flex xs12 md4>
+            <h5>First name:</h5>
+            <p>{{contactDetails.name}}</p>
+
+            <h5>Last name:</h5>
+            <p>{{contactDetails.lastname}}</p>
+          </v-flex>
+          <v-flex xs12 md4>
+            <h5>Email:</h5>
+            <p>{{contactDetails.email}}</p>
+
+            <h5>Phone:</h5>
+            <p>{{contactDetails.phone}}</p>
+          </v-flex>
+          <v-flex xs12 md4>
+            <h5>Birthday:</h5>
+            <p>{{contactDetails.birthdate}}</p>
+
+            <h5>Codice Fiscale:</h5>
+            <p>{{contactDetails.codiceFiscale}}</p>
           </v-flex>
         </v-layout>
-        <h3>Info Pay</h3>
-        <v-radio-group v-model="payment.infopay">
-          <v-radio label="Paypal" value="paypal"></v-radio>
-          <v-radio label="Stripe" value="stripe"></v-radio>
-        </v-radio-group>
-      </v-card>
-      <v-btn color="success" @click="currentStep = 5">Continue</v-btn>
-    </v-stepper-content>
 
-    <v-stepper-step editable step="5">Company Logo</v-stepper-step>
-    <v-stepper-content step="5">
-      <v-card flat class="mb-3">
-        <vue-core-image-upload
-          class="btn btn-primary"
-          crop="local"
-          :isXhr="false"
-          @imagechanged="imagechanged"
-          @imageuploading="imageuploading"
-          @imageuploaded="imageuploaded"
-          :max-file-size="5242880"
-        >
-          <v-btn color="primary" type="file">Upload Image</v-btn>
-        </vue-core-image-upload>
-        <v-card-text>
-          <v-avatar v-if="src" color="grey lighten-4" class="mb-3" size="90">
-            <img :src="src" alt="avatar" />
-          </v-avatar>
-          <!-- <img v-if="src" :src="src" /> -->
-          <p v-if="file">{{ file.name }}</p>
-        </v-card-text>
-      </v-card>
-      <v-btn color="success" @click="currentStep = 6">Continue</v-btn>
-      <v-btn color="primary" flat @click="currentStep = 6">Skip</v-btn>
-    </v-stepper-content>
+        <h3 class="mb-3">Company Details</h3>
+        <v-layout class="ml-3" wrap>
+          <v-flex xs12 md4>
+            <h5>Company name:</h5>
+            <p>{{companyDetails.companyName}}</p>
 
-    <v-stepper-step editable step="6">Resume</v-stepper-step>
-    <v-stepper-content step="6">
-      <v-layout align-center justify-center>
-        <v-flex style="text-align:center;">
-          <v-avatar v-if="src" color="grey lighten-4" class="mb-3" size="90">
-            <img :src="src" alt="avatar" />
-          </v-avatar>
-        </v-flex>
-      </v-layout>
+            <h5>P.IVA:</h5>
+            <p>{{companyDetails.piva}}</p>
 
-      <h3 class="mb-3">Contact Details</h3>
-      <v-layout class="ml-3" wrap>
-        <v-flex xs12 md4>
-          <h5>First name:</h5>
-          <p>{{contactDetails.name}}</p>
+            <h5>PEC:</h5>
+            <p>{{companyDetails.pec}}</p>
 
-          <h5>Last name:</h5>
-          <p>{{contactDetails.lastname}}</p>
-        </v-flex>
-        <v-flex xs12 md4>
-          <h5>Email:</h5>
-          <p>{{contactDetails.email}}</p>
+            <h5>Codice Fiscale:</h5>
+            <p>{{companyDetails.codiceFiscale}}</p>
 
-          <h5>Phone:</h5>
-          <p>{{contactDetails.phone}}</p>
-        </v-flex>
-        <v-flex xs12 md4>
-          <h5>Birthday:</h5>
-          <p>{{contactDetails.birthdate}}</p>
+            <h5>Telefono:</h5>
+            <p>{{companyDetails.phone}}</p>
+          </v-flex>
+          <v-flex xs12 md4>
+            <h5>Numero Civico:</h5>
+            <p>{{companyDetails.numeroCivico}}</p>
 
-          <h5>Codice Fiscale:</h5>
-          <p>{{contactDetails.codiceFiscale}}</p>
-        </v-flex>
-      </v-layout>
+            <h5>Sito Web:</h5>
+            <p>{{companyDetails.website}}</p>
 
-      <h3 class="mb-3">Company Details</h3>
-      <v-layout class="ml-3" wrap>
-        <v-flex xs12 md4>
-          <h5>Company name:</h5>
-          <p>{{companyDetails.companyName}}</p>
+            <h5>Indirizzo Sede Legale:</h5>
+            <p>{{companyDetails.address}}</p>
 
-          <h5>P.IVA:</h5>
-          <p>{{companyDetails.piva}}</p>
+            <h5>Stato:</h5>
+            <p>{{companyDetails.state}}</p>
+          </v-flex>
+          <v-flex xs12 md4>
+            <h5>Regione:</h5>
+            <p>{{companyDetails.region}}</p>
 
-          <h5>PEC:</h5>
-          <p>{{companyDetails.pec}}</p>
+            <h5>Provincia:</h5>
+            <p>{{companyDetails.province}}</p>
 
-          <h5>Codice Fiscale:</h5>
-          <p>{{companyDetails.codiceFiscale}}</p>
+            <h5>Città:</h5>
+            <p>{{companyDetails.city}}</p>
 
-          <h5>Telefono:</h5>
-          <p>{{companyDetails.phone}}</p>
-        </v-flex>
-        <v-flex xs12 md4>
-          <h5>Numero Civico:</h5>
-          <p>{{companyDetails.numeroCivico}}</p>
+            <h5>CAP:</h5>
+            <p>{{companyDetails.cap}}</p>
+          </v-flex>
+        </v-layout>
 
-          <h5>Sito Web:</h5>
-          <p>{{companyDetails.website}}</p>
+        <h3 class="mb-3">Plan</h3>
+        <v-layout class="ml-3" wrap>
+          <v-flex xs12 md4>
+            <h5>Plan Selected</h5>
+            <p>{{planSelected}}</p>
+          </v-flex>
+        </v-layout>
 
-          <h5>Indirizzo Sede Legale:</h5>
-          <p>{{companyDetails.address}}</p>
+        <h3 class="mb-3">Payment</h3>
+        <v-layout class="ml-3" wrap>
+          <v-flex md4>
+            <h5>Come vuoi ricevere la fattura?</h5>
+            <p>{{payment.whereTo}}</p>
 
-          <h5>Stato:</h5>
-          <p>{{companyDetails.state}}</p>
-        </v-flex>
-        <v-flex xs12 md4>
-          <h5>Regione:</h5>
-          <p>{{companyDetails.region}}</p>
+            <h5>InfoPay</h5>
+            <p>{{payment.infopay}}</p>
+          </v-flex>
+        </v-layout>
 
-          <h5>Provincia:</h5>
-          <p>{{companyDetails.province}}</p>
-
-          <h5>Città:</h5>
-          <p>{{companyDetails.city}}</p>
-
-          <h5>CAP:</h5>
-          <p>{{companyDetails.cap}}</p>
-        </v-flex>
-      </v-layout>
-
-      <h3 class="mb-3">Plan</h3>
-      <v-layout class="ml-3" wrap>
-        <v-flex xs12 md4>
-          <h5>Plan Selected</h5>
-          <p>{{planSelected}}</p>
-        </v-flex>
-      </v-layout>
-
-      <h3 class="mb-3">Payment</h3>
-      <v-layout class="ml-3" wrap>
-        <v-flex md4>
-          <h5>Come vuoi ricevere la fattura?</h5>
-          <p>{{payment.whereTo}}</p>
-
-          <h5>InfoPay</h5>
-          <p>{{payment.infopay}}</p>
-        </v-flex>
-      </v-layout>
-
-      <v-btn block class="mt-5" color="primary" @click="handleSubmit">Confirm</v-btn>
-    </v-stepper-content>
-  </v-stepper>
+        <v-btn block class="mt-5" color="primary" @click="handleSubmit">Confirm</v-btn>
+      </v-stepper-content>
+    </v-stepper>
+  </v-container>
 </template>
 
 <script>
@@ -587,3 +603,27 @@ export default {
   }
 };
 </script>
+
+<style>
+body {
+  font-family: "Montserrat", sans-serif !important;
+}
+
+.theme--light.application {
+  background: #fff;
+  color: rgba(0, 0, 0, 0.87);
+  /* width: 994px;
+
+    margin: 40px auto; */
+}
+
+.theme--light.v-icon {
+  color: rgba(111, 111, 111, 0.54);
+}
+
+.primary {
+  background-color: #d21919 !important;
+  border-color: #d21919 !important;
+}
+</style>
+
