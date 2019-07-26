@@ -1,10 +1,22 @@
 <template>
-  <v-app>
-    <v-toolbar app>
+  <v-app id="inspire">
+    <v-toolbar app color="white">
       <v-toolbar-title class="headline text-uppercase">
         <span>{{register}}</span>
-        <span class="font-weight-light">su 1x2Live</span>
+        <span class="font-weight-light">su</span>
       </v-toolbar-title>
+
+      <v-img
+        src="https://secure.1x2live.it/fl_config/secure.1x2live.it/img/logo.jpg"
+        max-height="100%"
+        contain
+        style="margin: 0 auto"
+      ></v-img>
+
+      <!-- <v-spacer></v-spacer>
+      <v-spacer></v-spacer>-->
+
+      <v-toolbar-items></v-toolbar-items>
     </v-toolbar>
 
     <v-content>
@@ -30,8 +42,9 @@ export default {
 </script>
 
 <style>
-body {
+#inspire {
   font-family: "Montserrat", sans-serif !important;
+  background-color: #f5f5f5;
 }
 
 .theme--light.application {
