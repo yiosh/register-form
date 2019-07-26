@@ -243,13 +243,13 @@
           <v-layout>
             <v-flex>
               <v-radio-group v-model="payment.whereTo">
-                <v-radio label="Pec" value="pec"></v-radio>
+                <v-radio label="PEC" value="pec"></v-radio>
                 <v-radio label="Codice SDI" value="codice_sdi"></v-radio>
               </v-radio-group>
             </v-flex>
             <v-text-field
               v-if="payment.whereTo == 'pec'"
-              v-model="payment.pec"
+              v-model="companyDetails.pec"
               prepend-icon="mdi-map-marker"
               label="Inserisci PEC"
               required
@@ -262,11 +262,11 @@
               required
             ></v-text-field>
           </v-layout>
-          <h3>Info Pay</h3>
+          <!-- <h3>Info Pay</h3>
           <v-radio-group v-model="payment.infopay">
             <v-radio label="Paypal" value="paypal"></v-radio>
             <v-radio label="Stripe" value="stripe"></v-radio>
-          </v-radio-group>
+          </v-radio-group>-->
           <v-btn block color="success" @click="currentStep = 6">Continua</v-btn>
         </v-card>
       </v-stepper-content>
@@ -385,7 +385,7 @@
           </v-flex>
         </v-layout>-->
 
-        <h3 class="mb-3">Payment</h3>
+        <h3 class="mb-3">Pagamento</h3>
         <v-layout class="ml-3" wrap>
           <v-flex md4>
             <h5>Come vuoi ricevere la fattura?</h5>
@@ -397,8 +397,8 @@
             <h5 v-if="payment.codice_sdi && payment.whereTo == 'codice_sdi'">Codice SDI</h5>
             <p v-if="payment.codice_sdi && payment.whereTo == 'codice_sdi'">{{payment.codice_sdi}}</p>
 
-            <h5>InfoPay</h5>
-            <p>{{payment.infopay}}</p>
+            <!-- <h5>InfoPay</h5>
+            <p>{{payment.infopay}}</p>-->
           </v-flex>
         </v-layout>
 
@@ -478,8 +478,10 @@ export default {
       },
       planSelected: "",
       payment: {
-        whereTo: null,
-        infopay: null
+        whereTo: "",
+        infopay: "",
+        codice_sdi: "",
+        pec: ""
       },
       imgDataUrl: "",
       params: {
@@ -571,31 +573,33 @@ export default {
       console.log("Selected City", selectedCity);
     },
     handleSubmit() {
-      this.formData.set("name", this.contactDetails.name);
-      this.formData.set("lastname", this.contactDetails.lastname);
+      this.formData.set("nome", this.contactDetails.name);
+      this.formData.set("cognome", this.contactDetails.lastname);
       this.formData.set("email", this.contactDetails.email);
-      this.formData.set("phone", this.contactDetails.phone);
-      this.formData.set("codiceFiscale", this.contactDetails.codiceFiscale);
-      this.formData.set("birthdate", this.contactDetails.birthdate);
-      this.formData.set("companyName", this.companyDetails.companyName);
-      this.formData.set("piva", this.companyDetails.piva);
+      this.formData.set("telefono", this.contactDetails.phone);
+      this.formData.set("codice_fiscale", this.contactDetails.codiceFiscale);
+      this.formData.set("data_di_nascita", this.contactDetails.birthdate);
+      this.formData.set("nome_aziendale", this.companyDetails.companyName);
+      this.formData.set("partita_iva", this.companyDetails.piva);
       this.formData.set(
-        "companyCodiceFiscale",
+        "codice_fiscale_aziendale",
         this.companyDetails.codiceFiscale
       );
-      this.formData.set("state", this.companyDetails.state);
-      this.formData.set("region", this.companyDetails.region);
-      this.formData.set("province", this.companyDetails.province);
-      this.formData.set("city", this.companyDetails.city);
-      this.formData.set("address", this.companyDetails.address);
-      this.formData.set("numeroCivico", this.companyDetails.numeroCivico);
-      this.formData.set("cap", this.companyDetails.cap);
-      this.formData.set("website", this.companyDetails.website);
-      this.formData.set("pec", this.companyDetails.pec);
-      this.formData.set("planSelected", this.planSelected);
-      this.formData.set("whereTo", this.payment.whereTo);
-      this.formData.set("infoPay", this.payment.infoPay);
-      this.formData.append("file0", this.file, this.file.name);
+      this.formData.set("telefono_aziendale", this.companyDetails.phone);
+      this.formData.set("sito_web", this.companyDetails.website);
+      this.formData.set("regione_sede", this.companyDetails.region);
+      this.formData.set("provincia_sede", this.companyDetails.province);
+      this.formData.set("comune_sede", this.companyDetails.city);
+      this.formData.set("cap_sede", this.companyDetails.cap);
+      this.formData.set("indirizzo_sede_legale", this.companyDetails.address);
+      this.formData.set("numero_civico", this.companyDetails.numeroCivico);
+      this.formData.set("ricezione_fatture", this.payment.whereTo);
+      if (this.payment.codice_sdi != "") {
+        this.formData.set("codice_destinatario", this.payment.codice_sdi);
+      } else {
+        this.formData.set("pec_destinatario", this.companyDetails.pec);
+      }
+      // this.formData.set("info_pay", this.payment.infoPay);
 
       axios
         .post(
