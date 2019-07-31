@@ -1,8 +1,14 @@
 <template>
   <v-app id="inspire">
-    <v-toolbar app color="white">
+    <v-toolbar
+      height="50px"
+      elevation="0"
+      style="box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.1) !important;"
+      app
+      color="white"
+    >
       <v-toolbar-title class="headline text-uppercase">
-        <span>{{register}}</span>
+        <span>{{ register }}</span>
         <span class="font-weight-light">su</span>
       </v-toolbar-title>
 
