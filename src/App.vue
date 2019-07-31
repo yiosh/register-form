@@ -13,9 +13,6 @@
         style="margin: 0 auto"
       ></v-img>
 
-      <!-- <v-spacer></v-spacer>
-      <v-spacer></v-spacer>-->
-
       <v-toolbar-items></v-toolbar-items>
     </v-toolbar>
 
