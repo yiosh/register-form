@@ -6,7 +6,8 @@
         editable
         :complete="currentStep > 1"
         step="1"
-      >Dettagli del contatto</v-stepper-step>
+        >Contatto</v-stepper-step
+      >
 
       <v-stepper-content step="1">
         <v-card class="mb-3" flat>
@@ -71,7 +72,10 @@
                         v-on="on"
                       ></v-text-field>
                     </template>
-                    <v-date-picker v-model="contactDetails.birthdate" @input="menu = false">
+                    <v-date-picker
+                      v-model="contactDetails.birthdate"
+                      @input="menu = false"
+                    >
                       <!-- <v-spacer></v-spacer>
                       <v-btn flat color="primary" @click="menu = false">Chiudi</v-btn>
                       <v-btn
@@ -94,7 +98,8 @@
         editable
         :complete="currentStep > 2"
         step="2"
-      >Dettagli della Compagnia</v-stepper-step>
+        >Azienda</v-stepper-step
+      >
 
       <v-stepper-content step="2">
         <v-card class="mb-3" flat>
@@ -131,6 +136,13 @@
                   ></v-text-field>
 
                   <v-text-field
+                    v-model="companyDetails.email"
+                    prepend-icon="mdi-email"
+                    label="E-mail"
+                    required
+                  ></v-text-field>
+
+                  <v-text-field
                     v-model="companyDetails.website"
                     prepend-icon="mdi-web"
                     label="Sito Web"
@@ -146,12 +158,12 @@
                 </v-flex>
 
                 <v-flex xs12 md6>
-                  <!-- <v-text-field
+                  <v-text-field
                     v-model="companyDetails.state"
                     prepend-icon="mdi-map-marker"
                     label="Stato"
                     required
-                  ></v-text-field>-->
+                  ></v-text-field>
 
                   <v-select
                     prepend-icon="mdi-map-marker"
@@ -236,37 +248,70 @@
         </v-card>
       </v-stepper-content>-->
 
-      <v-stepper-step color="#d21919" editable :complete="currentStep > 4" step="4">Pagamento</v-stepper-step>
+      <v-stepper-step
+        color="#d21919"
+        editable
+        :complete="currentStep > 4"
+        step="4"
+        >Fatturazione</v-stepper-step
+      >
       <v-stepper-content step="4">
         <v-card class="mb-3" flat>
-          <h3>Come vuoi ricevere la fattura?</h3>
-          <v-layout>
+          <!-- <h3>
+            Sei soggetto a fatturazione elettronica?
+            <v-radio-group v-model="payment.whereTo">
+              <v-radio label="PEC" value="pec"></v-radio>
+              <v-radio label="Codice SDI" value="codice_sdi"></v-radio>
+            </v-radio-group>
+          </h3>
+          <h3>Come vuoi ricevere la fattura?</h3> -->
+          <v-layout wrap>
             <v-flex>
-              <v-radio-group v-model="payment.whereTo">
+              <h3>Sei soggetto a fatturazione elettronica?</h3>
+              <v-radio-group v-model="payment.fatturaElettronica">
+                <v-radio label="Si" value="1"></v-radio>
+                <v-radio label="No" value="0"></v-radio>
+              </v-radio-group>
+            </v-flex>
+            <v-flex>
+              <h3 v-if="payment.fatturaElettronica == '1'">
+                Come vuoi ricevere la fattura?
+              </h3>
+              <v-radio-group
+                v-if="payment.fatturaElettronica == '1'"
+                v-model="payment.whereTo"
+              >
                 <v-radio label="PEC" value="pec"></v-radio>
                 <v-radio label="Codice SDI" value="codice_sdi"></v-radio>
               </v-radio-group>
             </v-flex>
-            <v-text-field
-              v-if="payment.whereTo == 'pec'"
-              v-model="companyDetails.pec"
-              prepend-icon="mdi-map-marker"
-              label="Inserisci PEC"
-              required
-            ></v-text-field>
-            <v-text-field
-              v-if="payment.whereTo == 'codice_sdi'"
-              v-model="payment.codice_sdi"
-              prepend-icon="mdi-map-marker"
-              label="Inserisci codice SDI"
-              required
-            ></v-text-field>
+            <v-flex>
+              <v-text-field
+                v-if="
+                  payment.whereTo == 'pec' && payment.fatturaElettronica == '1'
+                "
+                v-model="payment.pec"
+                prepend-icon="mdi-map-marker"
+                label="Inserisci PEC"
+                required
+              ></v-text-field>
+              <v-text-field
+                v-if="
+                  payment.whereTo == 'codice_sdi' &&
+                    payment.fatturaElettronica == '1'
+                "
+                v-model="payment.codice_sdi"
+                prepend-icon="mdi-map-marker"
+                label="Inserisci codice SDI"
+                required
+              ></v-text-field>
+            </v-flex>
           </v-layout>
-          <!-- <h3>Info Pay</h3>
-          <v-radio-group v-model="payment.infopay">
-            <v-radio label="Paypal" value="paypal"></v-radio>
-            <v-radio label="Stripe" value="stripe"></v-radio>
-          </v-radio-group>-->
+          <h3>Come vuoi pagare?</h3>
+          <v-radio-group v-model="payment.metodoPagamento">
+            <v-radio label="Bonifico Bancario" value="bonifico"></v-radio>
+            <v-radio label="Ricarica GoServizi" value="ricarica"></v-radio>
+          </v-radio-group>
           <v-btn block color="success" @click="currentStep = 6">Continua</v-btn>
         </v-card>
       </v-stepper-content>
@@ -296,7 +341,9 @@
         <v-btn color="primary" flat @click="currentStep = 6">Skip</v-btn>
       </v-stepper-content>-->
 
-      <v-stepper-step color="#d21919" editable step="6">Resume</v-stepper-step>
+      <v-stepper-step color="#d21919" editable step="6">
+        Riepilogo Dati
+      </v-stepper-step>
       <v-stepper-content step="6">
         <v-layout align-center justify-center>
           <v-flex style="text-align:center;">
@@ -310,24 +357,24 @@
         <v-layout class="ml-3" wrap>
           <v-flex xs12 md4>
             <h5>Nome:</h5>
-            <p>{{contactDetails.name}}</p>
+            <p>{{ contactDetails.name }}</p>
 
             <h5>Cognome:</h5>
-            <p>{{contactDetails.lastname}}</p>
+            <p>{{ contactDetails.lastname }}</p>
           </v-flex>
           <v-flex xs12 md4>
             <h5>E-mail:</h5>
-            <p>{{contactDetails.email}}</p>
+            <p>{{ contactDetails.email }}</p>
 
             <h5>Telefono:</h5>
-            <p>{{contactDetails.phone}}</p>
+            <p>{{ contactDetails.phone }}</p>
           </v-flex>
           <v-flex xs12 md4>
             <h5>Data di Nascita:</h5>
-            <p>{{birthdateFormatted}}</p>
+            <p>{{ birthdateFormatted }}</p>
 
             <h5>Codice Fiscale:</h5>
-            <p>{{contactDetails.codiceFiscale}}</p>
+            <p>{{ contactDetails.codiceFiscale }}</p>
           </v-flex>
         </v-layout>
 
@@ -335,45 +382,45 @@
         <v-layout class="ml-3" wrap>
           <v-flex xs12 md4>
             <h5>Nome dell'azienda:</h5>
-            <p>{{companyDetails.companyName}}</p>
+            <p>{{ companyDetails.companyName }}</p>
 
             <h5>P.IVA:</h5>
-            <p>{{companyDetails.piva}}</p>
+            <p>{{ companyDetails.piva }}</p>
 
             <h5>PEC:</h5>
-            <p>{{companyDetails.pec}}</p>
+            <p>{{ companyDetails.pec }}</p>
 
             <h5>Codice Fiscale:</h5>
-            <p>{{companyDetails.codiceFiscale}}</p>
+            <p>{{ companyDetails.codiceFiscale }}</p>
 
             <h5>Telefono:</h5>
-            <p>{{companyDetails.phone}}</p>
+            <p>{{ companyDetails.phone }}</p>
           </v-flex>
           <v-flex xs12 md4>
             <h5>Numero Civico:</h5>
-            <p>{{companyDetails.numeroCivico}}</p>
+            <p>{{ companyDetails.numeroCivico }}</p>
 
             <h5>Sito Web:</h5>
-            <p>{{companyDetails.website}}</p>
+            <p>{{ companyDetails.website }}</p>
 
             <h5>Indirizzo Sede Legale:</h5>
-            <p>{{companyDetails.address}}</p>
+            <p>{{ companyDetails.address }}</p>
 
             <!-- <h5>Stato:</h5>
             <p>{{companyDetails.state}}</p>-->
           </v-flex>
           <v-flex xs12 md4>
             <h5>Regione:</h5>
-            <p>{{selectedRegion}}</p>
+            <p>{{ selectedRegion }}</p>
 
             <h5>Provincia:</h5>
-            <p>{{companyDetails.province}}</p>
+            <p>{{ companyDetails.province }}</p>
 
             <h5>Città:</h5>
-            <p>{{selectedCity}}</p>
+            <p>{{ selectedCity }}</p>
 
             <h5>CAP:</h5>
-            <p>{{companyDetails.cap}}</p>
+            <p>{{ companyDetails.cap }}</p>
           </v-flex>
         </v-layout>
 
@@ -388,21 +435,121 @@
         <h3 class="mb-3">Pagamento</h3>
         <v-layout class="ml-3" wrap>
           <v-flex md4>
-            <h5>Come vuoi ricevere la fattura?</h5>
-            <p>{{payment.whereTo}}</p>
+            <h5 v-if="payment.fatturaElettronica == '1'">
+              Come vuoi ricevere la fattura?
+            </h5>
+            <p v-if="payment.fatturaElettronica == '1'">
+              {{ payment.whereTo }}
+            </p>
 
-            <h5 v-if="payment.pec && payment.whereTo == 'pec'">PEC</h5>
-            <p v-if="payment.pec && payment.whereTo == 'pec'">{{payment.pec}}</p>
+            <h5
+              v-if="
+                payment.pec &&
+                  payment.whereTo == 'pec' &&
+                  payment.fatturaElettronica == '1'
+              "
+            >
+              PEC
+            </h5>
+            <p
+              v-if="
+                payment.pec &&
+                  payment.whereTo == 'pec' &&
+                  payment.fatturaElettronica == '1'
+              "
+            >
+              {{ payment.pec }}
+            </p>
 
-            <h5 v-if="payment.codice_sdi && payment.whereTo == 'codice_sdi'">Codice SDI</h5>
-            <p v-if="payment.codice_sdi && payment.whereTo == 'codice_sdi'">{{payment.codice_sdi}}</p>
+            <h5
+              v-if="
+                payment.codice_sdi &&
+                  payment.whereTo == 'codice_sdi' &&
+                  payment.fatturaElettronica == '1'
+              "
+            >
+              Codice SDI
+            </h5>
+            <p
+              v-if="
+                payment.codice_sdi &&
+                  payment.whereTo == 'codice_sdi' &&
+                  payment.fatturaElettronica == '1'
+              "
+            >
+              {{ payment.codice_sdi }}
+            </p>
 
-            <!-- <h5>InfoPay</h5>
-            <p>{{payment.infopay}}</p>-->
+            <h5>Come vuoi Pagare</h5>
+            <p>{{ payment.metodoPagamento }}</p>
+
           </v-flex>
         </v-layout>
 
-        <v-btn block dark class="mt-5" color="#d21919" @click="handleSubmit">Confirm</v-btn>
+        <h3 >Privacy</h3>
+        <v-layout class="ml-3" wrap>
+          <v-flex>
+            <v-checkbox
+              v-model="privacy.accettazione_condizioni_del_servizio"
+              :rules="[v => !!v || 'Richiesto']"
+              label="Ho letto ed accetto le condizioni generali del servizio."
+              required
+            ></v-checkbox>
+            <span style="font-size: smaller;">
+              Leggi le condizioni generali del servizio prima di procedere.
+            </span>
+          </v-flex>
+
+          <v-flex>
+            <v-checkbox
+              v-model="privacy.gdpr_consenso_trattamento1"
+              :rules="[v => !!v || 'Richiesto']"
+              label="Presto il consenso al trattamento ai fini della registrazione."
+              required
+            ></v-checkbox>
+            <span style="font-size: smaller;">
+              Ai Sensi del GDPR 2016/679 Ti informiamo che tratteremo questi dati al
+              solo scopo di procedere alla pre-registrazione al servizio e per
+              comunicare con te relativamente all'attivazione e configurazione dello
+              stesso. Se non completerai il processo entro 30 giorni, li
+              cancelleremo automaticamente.
+            </span>
+          </v-flex>
+
+          <v-flex>
+            <v-checkbox
+              v-model="privacy.gdpr_consenso_trattamento2"
+              label="Presto il consenso al trattamento ai fini delle comunicazioni
+          promozionali/marketing."
+            ></v-checkbox>
+            <span style="font-size: smaller;">
+              Ai Sensi del GDPR 2016/679 Ti informiamo che tratteremo questi dati al
+          solo scopo di procedere alla pre-registrazione al servizio e per
+          comunicare con te relativamente all'attivazione e configurazione dello
+          stesso. Se non completerai il processo entro 30 giorni, li
+          cancelleremo automaticamente.
+            </span>
+          </v-flex>
+
+          <v-flex>
+            <v-checkbox
+              v-model="privacy.gdpr_consenso_trattamento3"
+              label="Presto il consenso al trattamento ai fini della profilazione."
+            ></v-checkbox>
+            <span style="font-size: smaller;">
+              Ai Sensi del GDPR 2016/679 Ti informiamo che tratteremo questi dati al
+          solo scopo di procedere alla pre-registrazione al servizio e per
+          comunicare con te relativamente all'attivazione e configurazione dello
+          stesso. Se non completerai il processo entro 30 giorni, li
+          cancelleremo automaticamente.
+            </span>
+          </v-flex>
+        </v-layout>
+
+        <v-btn block dark class="mt-5" color="#d21919" @click="handleSubmit">
+          Conferma
+        </v-btn>
+
       </v-stepper-content>
     </v-stepper>
   </v-container>
@@ -465,7 +612,7 @@ export default {
         companyName: "",
         piva: "",
         codiceFiscale: "",
-        state: "",
+        state: "IT",
         region: "",
         province: "",
         city: "",
@@ -473,15 +620,18 @@ export default {
         numeroCivico: "",
         cap: "",
         phone: "",
+        email: "",
         website: "",
         pec: ""
       },
       planSelected: "",
       payment: {
+        fatturaElettronica: "",
         whereTo: "",
         infopay: "",
         codice_sdi: "",
-        pec: ""
+        pec: "",
+        metodoPagamento: ""
       },
       imgDataUrl: "",
       params: {
@@ -490,6 +640,13 @@ export default {
       },
       headers: {
         smail: "*_~"
+      },
+      privacy: {
+        accettazione_condizioni_del_servizio: false,
+        gdpr_consenso_trattamento1: false,
+        gdpr_consenso_trattamento2: false,
+        gdpr_consenso_trattamento3: false,
+        gdpr_consenso_trattamento4: false
       },
       selectedRegion: "",
       selectedCity: "",
@@ -575,48 +732,65 @@ export default {
     handleSubmit() {
       this.formData.set("nome", this.contactDetails.name);
       this.formData.set("cognome", this.contactDetails.lastname);
-      this.formData.set("email", this.contactDetails.email);
-      this.formData.set("telefono", this.contactDetails.phone);
+      this.formData.set("email_persona", this.contactDetails.email);
+      this.formData.set("telefono_persona", this.contactDetails.phone);
       this.formData.set("codice_fiscale", this.contactDetails.codiceFiscale);
-      this.formData.set("data_di_nascita", this.contactDetails.birthdate);
-      this.formData.set("nome_aziendale", this.companyDetails.companyName);
+      this.formData.set("data_nascita", this.contactDetails.birthdate);
+      this.formData.set("ragione_sociale", this.companyDetails.companyName);
       this.formData.set("partita_iva", this.companyDetails.piva);
       this.formData.set(
-        "codice_fiscale_aziendale",
+        "codice_fiscale_legale",
         this.companyDetails.codiceFiscale
       );
-      this.formData.set("telefono_aziendale", this.companyDetails.phone);
+      this.formData.set("telefono", this.companyDetails.phone);
       this.formData.set("sito_web", this.companyDetails.website);
+      this.formData.set("stato_sede", this.companyDetails.state);
       this.formData.set("regione_sede", this.companyDetails.region);
       this.formData.set("provincia_sede", this.companyDetails.province);
       this.formData.set("comune_sede", this.companyDetails.city);
       this.formData.set("cap_sede", this.companyDetails.cap);
       this.formData.set("indirizzo_sede_legale", this.companyDetails.address);
-      this.formData.set("numero_civico", this.companyDetails.numeroCivico);
+      this.formData.set("email", this.companyDetails.email);
+      // this.formData.set("numero_civico", this.companyDetails.numeroCivico);
       this.formData.set("ricezione_fatture", this.payment.whereTo);
+      this.formData.set("fattura_elettronica", this.payment.fatturaElettronica);
+      // this.formData.set("metodo_di_pagamento", this.payment.metodoPagamento);
+      this.formData.set("accettazione_condizioni_del_servizio", this.privacy.accettazione_condizioni_del_servizio);
+      
+      this.formData.set("gdpr_consenso_trattamento1", this.privacy.gdpr_consenso_trattamento1);
+      this.formData.set("gdpr_consenso_trattamento2", this.privacy.gdpr_consenso_trattamento2);
+      this.formData.set("gdpr_consenso_trattamento3", this.privacy.gdpr_consenso_trattamento3);
+      this.formData.set("gdpr_consenso_trattamento4", this.privacy.gdpr_consenso_trattamento4);
       if (this.payment.codice_sdi != "") {
         this.formData.set("codice_destinatario", this.payment.codice_sdi);
       } else {
-        this.formData.set("pec_destinatario", this.companyDetails.pec);
+        this.formData.set("pec_destinatario", this.payment.pec);
       }
       // this.formData.set("info_pay", this.payment.infoPay);
 
-      axios
-        .post(
-          window.location.hostname !== "localhost"
-            ? "//demo.condivision.cloud/fl_api/registerApi.php"
-            : "http://localhost:80/register-form/registerApi.php",
-          this.formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data"
+      if (this.privacy.accettazione_condizioni_del_servizio && this.privacy.gdpr_consenso_trattamento1) {
+        axios
+          .post(
+            window.location.hostname !== "localhost"
+              ? "//demo.condivision.cloud/fl_api/registerApi.php"
+              : "http://localhost:80/register-form/registerApi.php",
+            this.formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data"
+              }
             }
-          }
-        )
-        .then(function(response) {
-          console.log("saved successfully");
-          console.log(response.data);
-        });
+          )
+          .then(function(response) {
+            console.log("Response", response.data);
+          })
+          .catch(function(error) {
+            // handle error
+            console.log(error);
+          });
+      } else {
+        alert("È necessario accettare le condizioni sulla privacy per continuare");
+      }
     },
     handleFree() {
       this.planSelected = "Free";
@@ -695,6 +869,3 @@ export default {
   }
 };
 </script>
-
-
-
