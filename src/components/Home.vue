@@ -73,16 +73,10 @@
                       ></v-text-field>
                     </template>
                     <v-date-picker
+                      locale="it-it"
                       v-model="contactDetails.birthdate"
                       @input="menu = false"
                     >
-                      <!-- <v-spacer></v-spacer>
-                      <v-btn flat color="primary" @click="menu = false">Chiudi</v-btn>
-                      <v-btn
-                        flat
-                        color="primary"
-                        @click="$refs.menu.save(contactDetails.birthdate)"
-                      >OK</v-btn>-->
                     </v-date-picker>
                   </v-menu>
                 </v-flex>
@@ -286,7 +280,6 @@
           <h3>Come vuoi pagare?</h3>
           <v-radio-group v-model="payment.metodoPagamento">
             <v-radio label="Bonifico Bancario" value="bonifico"></v-radio>
-            <v-radio label="Ricarica GoServizi" value="ricarica"></v-radio>
           </v-radio-group>
           <v-btn block color="success" @click="currentStep = 6">Continua</v-btn>
         </v-card>
@@ -296,7 +289,6 @@
         Riepilogo Dati
       </v-stepper-step>
       <v-stepper-content step="6">
-
         <h3 class="mb-3">Dettagli del Contatto</h3>
         <v-layout class="ml-3" wrap>
           <v-flex xs12 md4>
@@ -418,11 +410,10 @@
 
             <h5>Come vuoi Pagare</h5>
             <p>{{ payment.metodoPagamento }}</p>
-
           </v-flex>
         </v-layout>
 
-        <h3 >Condizioni Generali del Servizio</h3>
+        <h3>Condizioni Generali del Servizio</h3>
         <v-layout class="ml-3" wrap>
           <v-flex>
             <v-checkbox
@@ -447,11 +438,11 @@
               required
             ></v-checkbox>
             <span style="font-size: smaller;">
-              Ai Sensi del GDPR 2016/679 Ti informiamo che tratteremo questi dati al
-              solo scopo di procedere alla pre-registrazione al servizio e per
-              comunicare con te relativamente all'attivazione e configurazione dello
-              stesso. Se non completerai il processo entro 30 giorni, li
-              cancelleremo automaticamente.
+              Ai Sensi del GDPR 2016/679 Ti informiamo che tratteremo questi
+              dati al solo scopo di procedere alla pre-registrazione al servizio
+              e per comunicare con te relativamente all'attivazione e
+              configurazione dello stesso. Se non completerai il processo entro
+              30 giorni, li cancelleremo automaticamente.
             </span>
           </v-flex>
 
@@ -462,11 +453,11 @@
           promozionali/marketing."
             ></v-checkbox>
             <span style="font-size: smaller;">
-              Ai Sensi del GDPR 2016/679 Ti informiamo che tratteremo questi dati al
-          solo scopo di procedere alla pre-registrazione al servizio e per
-          comunicare con te relativamente all'attivazione e configurazione dello
-          stesso. Se non completerai il processo entro 30 giorni, li
-          cancelleremo automaticamente.
+              Ai Sensi del GDPR 2016/679 Ti informiamo che tratteremo questi
+              dati al solo scopo di procedere alla pre-registrazione al servizio
+              e per comunicare con te relativamente all'attivazione e
+              configurazione dello stesso. Se non completerai il processo entro
+              30 giorni, li cancelleremo automaticamente.
             </span>
           </v-flex>
 
@@ -476,11 +467,11 @@
               label="Accetto il consenso al trattamento ai fini della profilazione."
             ></v-checkbox>
             <span style="font-size: smaller;">
-              Ai Sensi del GDPR 2016/679 Ti informiamo che tratteremo questi dati al
-          solo scopo di procedere alla pre-registrazione al servizio e per
-          comunicare con te relativamente all'attivazione e configurazione dello
-          stesso. Se non completerai il processo entro 30 giorni, li
-          cancelleremo automaticamente.
+              Ai Sensi del GDPR 2016/679 Ti informiamo che tratteremo questi
+              dati al solo scopo di procedere alla pre-registrazione al servizio
+              e per comunicare con te relativamente all'attivazione e
+              configurazione dello stesso. Se non completerai il processo entro
+              30 giorni, li cancelleremo automaticamente.
             </span>
           </v-flex>
         </v-layout>
@@ -490,52 +481,57 @@
         </v-btn>
       </v-stepper-content>
     </v-stepper>
-    <v-layout v-if="progress && !formSuccess" fill-height align-center justify-center>
+    <v-layout
+      v-if="progress && !formSuccess"
+      fill-height
+      align-center
+      justify-center
+      column
+    >
       <v-progress-circular
         :size="70"
         :width="7"
         color="red"
         indeterminate
       ></v-progress-circular>
+      <br>
+      <p>Stiamo elaborando i tuoi dati</p>
     </v-layout>
 
-    <v-layout v-if="!progress && formSuccess" fill-height align-center justify-center>
-      <v-card
-        height="20em"
-        width="25em"
-        class="mx-auto"
-      >
-        <v-card-title>
-          
-        </v-card-title>
+    <v-layout
+      v-if="!progress && formSuccess"
+      fill-height
+      align-center
+      justify-center
+    >
+      <v-card height="20em" width="25em" class="mx-auto">
+        <v-card-title></v-card-title>
 
-        <v-card-text style="text-align: center;" class="headline font-weight-bold">
-          <v-icon color="success" size="5em" >mdi-check-bold</v-icon>
-          <br>
-          Procedura completata!
+        <v-card-text
+          style="text-align: center;"
+          class="headline font-weight-bold"
+        >
+          <v-icon color="success" size="5em">mdi-check-bold</v-icon>
+          <!-- <br /> -->
+          <p>Procedura completata!</p>
+          <p style="font-size: .5em;">
+            Tra {{ counter }} secondi sarai reindirizzato alla
+            <a style="color: rgb(192, 0, 0);" :href="origin">piattaforma.</a>
+          </p>
         </v-card-text>
       </v-card>
     </v-layout>
-    <a style="display:none;" id="redirect" href="https://secure.1x2live.it"></a>
   </v-container>
 </template>
 
 <script>
-// import PictureInput from "vue-picture-input";
-// import myUpload from "vue-image-crop-upload";
-// import VueCropper from "vue-cropperjs";
-// import "cropperjs/dist/cropper.css";
-import VueCoreImageUpload from "vue-core-image-upload";
 import axios from "axios";
+import { setTimeout } from "timers";
 export default {
-  components: {
-    // PictureInput
-    // VueCropper,
-    "vue-core-image-upload": VueCoreImageUpload
-    // "my-upload": myUpload
-  },
   data: vm => {
     return {
+      origin: location.origin,
+      counter: 3,
       overlay: true,
       states: ["IT"],
       formSuccess: false,
@@ -579,9 +575,7 @@ export default {
         v => !!v || "Name is required",
         v => v.length <= 10 || "Name must be less than 10 characters"
       ],
-      codiceSdiRule: [
-        v => v.length <= 7 || "Massimo 7 caratteri"
-      ],
+      codiceSdiRule: [v => v.length <= 7 || "Massimo 7 caratteri"],
       emailRules: [
         v => !!v || "Email obbligatoria",
         v => /.+@.+/.test(v) || "L'email deve essere valida"
@@ -618,7 +612,7 @@ export default {
         infopay: "",
         codice_sdi: "",
         pec: "",
-        metodoPagamento: ""
+        metodoPagamento: "bonifico"
       },
       imgDataUrl: "",
       params: {
@@ -637,7 +631,6 @@ export default {
       },
       selectedRegion: "",
       selectedCity: "",
-      imgDataUrl: "",
       en: {
         hint: "Click or drag the file here to upload",
         loading: "Uploading…",
@@ -666,6 +659,9 @@ export default {
     }
   },
   methods: {
+    countDown() {
+      this.counter = this.counter - 1;
+    },
     formatDate(date) {
       if (!date) return null;
 
@@ -695,13 +691,8 @@ export default {
         });
     },
     handleStateChange() {
-      // this.loaders.region = true;
-      // const region = this.regions.filter(region => region.id == id);
-      // this.selectedRegion = region[0].region_description;
       axios
-        .get(
-          "https://mysql.condivision.cloud/data/?tag=forma_giuridica"
-        )
+        .get("https://mysql.condivision.cloud/data/?tag=forma_giuridica")
         .then(response => {
           this.formaGiuridica = response.data;
           // this.loaders.region = false;
@@ -762,27 +753,43 @@ export default {
       this.formData.set("ricezione_fatture", this.payment.whereTo);
       this.formData.set("fattura_elettronica", this.payment.fatturaElettronica);
       // this.formData.set("metodo_di_pagamento", this.payment.metodoPagamento);
-      this.formData.set("accettazione_condizioni_del_servizio", this.privacy.accettazione_condizioni_del_servizio ? 1 : 0);
-      
-      this.formData.set("gdpr_consenso_trattamento1", this.privacy.gdpr_consenso_trattamento1 ? 1 : 0);
-      this.formData.set("gdpr_consenso_trattamento2", this.privacy.gdpr_consenso_trattamento2 ? 1 : 0);
-      this.formData.set("gdpr_consenso_trattamento3", this.privacy.gdpr_consenso_trattamento3 ? 1 : 0);
-      this.formData.set("gdpr_consenso_trattamento4", this.privacy.gdpr_consenso_trattamento4 ? 1 : 0);
+      this.formData.set(
+        "accettazione_condizioni_del_servizio",
+        this.privacy.accettazione_condizioni_del_servizio ? 1 : 0
+      );
+
+      this.formData.set(
+        "gdpr_consenso_trattamento1",
+        this.privacy.gdpr_consenso_trattamento1 ? 1 : 0
+      );
+      this.formData.set(
+        "gdpr_consenso_trattamento2",
+        this.privacy.gdpr_consenso_trattamento2 ? 1 : 0
+      );
+      this.formData.set(
+        "gdpr_consenso_trattamento3",
+        this.privacy.gdpr_consenso_trattamento3 ? 1 : 0
+      );
+      this.formData.set(
+        "gdpr_consenso_trattamento4",
+        this.privacy.gdpr_consenso_trattamento4 ? 1 : 0
+      );
       if (this.payment.codice_sdi != "") {
         this.formData.set("codice_destinatario", this.payment.codice_sdi);
       } else {
         this.formData.set("pec_destinatario", this.payment.pec);
       }
-      // this.formData.set("info_pay", this.payment.infoPay);
 
-      if (this.privacy.accettazione_condizioni_del_servizio && this.privacy.gdpr_consenso_trattamento1) {
+      if (
+        this.privacy.accettazione_condizioni_del_servizio &&
+        this.privacy.gdpr_consenso_trattamento1
+      ) {
         this.progress = true;
         axios
           .post(
-            location.hostname == "localhost" ? 
-            "//secure.1x2live.it/fl_api/"
-            :
-            "//" + location.hostname + "/fl_api/",
+            location.hostname == "localhost"
+              ? "//secure.1x2live.it/fl_api/"
+              : "//" + location.hostname + "/fl_api/",
             this.formData,
             {
               headers: {
@@ -794,7 +801,10 @@ export default {
             if (response.data.esito == "OK") {
               this.progress = false;
               this.formSuccess = true;
-              window.setTimeout(function(){ document.getElementById("redirect").click() },3000);
+
+              setTimeout(() => {
+                window.location.href = location.origin;
+              }, 3000);
             }
             console.log("Response", response.data);
           })
@@ -805,74 +815,10 @@ export default {
       } else if (!this.privacy.accettazione_condizioni_del_servizio) {
         alert("Devi accettare le Condizioni Generali del Servizio");
       } else if (!this.privacy.gdpr_consenso_trattamento1) {
-        alert("Devi accettare il consenso al trattamento ai fini della registrazione");
+        alert(
+          "Devi accettare il consenso al trattamento ai fini della registrazione"
+        );
       }
-    },
-    handleFree() {
-      this.planSelected = "Free";
-      this.currentStep = 5;
-    },
-    handlePlanA() {
-      this.planSelected = "Plan A";
-      this.currentStep = 4;
-    },
-    handlePlanB() {
-      this.planSelected = "Plan B";
-      this.currentStep = 4;
-    },
-    imagechanged(res) {
-      this.src = res;
-      let base64ImageContent = res.replace(
-        /^data:image\/(png|jpg|jpeg);base64,/,
-        ""
-      );
-      let blob = this.base64ToBlob(base64ImageContent, "image/jpeg");
-      console.log("blob", blob);
-      this.formData.set("picture", blob);
-      console.log("imagechanged", this.formData);
-    },
-    base64ToBlob(base64, mime) {
-      mime = mime || "";
-      var sliceSize = 1024;
-      var byteChars = window.atob(base64);
-      var byteArrays = [];
-
-      for (
-        var offset = 0, len = byteChars.length;
-        offset < len;
-        offset += sliceSize
-      ) {
-        var slice = byteChars.slice(offset, offset + sliceSize);
-
-        var byteNumbers = new Array(slice.length);
-        for (var i = 0; i < slice.length; i++) {
-          byteNumbers[i] = slice.charCodeAt(i);
-        }
-
-        var byteArray = new Uint8Array(byteNumbers);
-
-        byteArrays.push(byteArray);
-      }
-
-      return new Blob(byteArrays, { type: mime });
-    },
-    imageuploading(res) {
-      this.file = res;
-      // var reader = new FileReader();
-
-      // this.src = URL.createObjectURL(res);
-      // // console.log("file", result);
-      console.log("imageuploading", res);
-    },
-    imageuploaded(res) {
-      console.log("imageuploaded", res);
-    },
-    all() {
-      this.panel = [...Array(this.items).keys()].map(_ => true);
-    },
-    // Reset the panel
-    none() {
-      this.panel = [];
     }
   },
   created() {
