@@ -1,7 +1,11 @@
 <template>
   <v-container fill-height>
     <v-form v-model="valid">
-      <v-stepper v-if="!progress && !formSuccess" v-model="currentStep" vertical>
+      <v-stepper
+        v-if="!progress && !formSuccess"
+        v-model="currentStep"
+        vertical
+      >
         <v-stepper-step
           color="#d21919"
           editable
@@ -12,77 +16,76 @@
 
         <v-stepper-content step="1">
           <v-card class="mb-3" flat>
-            
-              <v-container fluid>
-                <v-layout wrap>
-                  <v-flex xs12 md6>
-                    <v-text-field
-                      v-model="contactDetails.name"
-                      prepend-icon="mdi-account"
-                      label="Nome"
-                      required
-                    ></v-text-field>
-                    <v-text-field
-                      v-model="contactDetails.lastname"
-                      prepend-icon="mdi-account"
-                      label="Cognome"
-                      required
-                    ></v-text-field>
-                    <v-text-field
-                      v-model="contactDetails.email"
-                      :rules="emailRules"
-                      prepend-icon="mdi-email"
-                      label="E-mail"
-                      required
-                    ></v-text-field>
-                  </v-flex>
+            <v-container fluid>
+              <v-layout wrap>
+                <v-flex xs12 md6>
+                  <v-text-field
+                    v-model="contactDetails.name"
+                    prepend-icon="mdi-account"
+                    label="Nome"
+                    required
+                  ></v-text-field>
+                  <v-text-field
+                    v-model="contactDetails.lastname"
+                    prepend-icon="mdi-account"
+                    label="Cognome"
+                    required
+                  ></v-text-field>
+                  <v-text-field
+                    v-model="contactDetails.email"
+                    :rules="emailRules"
+                    prepend-icon="mdi-email"
+                    label="E-mail"
+                    required
+                  ></v-text-field>
+                </v-flex>
 
-                  <v-flex xs12 md6>
-                    <v-text-field
-                      v-model="contactDetails.phone"
-                      prepend-icon="mdi-cellphone"
-                      label="Telefono"
-                      required
-                    ></v-text-field>
+                <v-flex xs12 md6>
+                  <v-text-field
+                    v-model="contactDetails.phone"
+                    prepend-icon="mdi-cellphone"
+                    label="Telefono"
+                    required
+                  ></v-text-field>
 
-                    <v-text-field
-                      v-model="contactDetails.codiceFiscale"
-                      prepend-icon="mdi-account-card-details"
-                      label="Codice Fiscale"
-                      required
-                    ></v-text-field>
+                  <v-text-field
+                    v-model="contactDetails.codiceFiscale"
+                    prepend-icon="mdi-account-card-details"
+                    label="Codice Fiscale"
+                    required
+                  ></v-text-field>
 
-                    <v-menu
-                      ref="menu"
-                      v-model="menu"
-                      :close-on-content-click="false"
-                      :nudge-right="40"
-                      lazy
-                      transition="scale-transition"
-                      offset-y
-                      full-width
-                      min-width="290px"
+                  <v-menu
+                    ref="menu"
+                    v-model="menu"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    lazy
+                    transition="scale-transition"
+                    offset-y
+                    full-width
+                    min-width="290px"
+                  >
+                    <template v-slot:activator="{ on }">
+                      <v-text-field
+                        v-model="birthdateFormatted"
+                        persistent-hint
+                        label="Data di Nascita"
+                        prepend-icon="event"
+                        readonly
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker
+                      locale="it-it"
+                      v-model="contactDetails.birthdate"
+                      @input="menu = false"
                     >
-                      <template v-slot:activator="{ on }">
-                        <v-text-field
-                          v-model="birthdateFormatted"
-                          persistent-hint
-                          label="Data di Nascita"
-                          prepend-icon="event"
-                          readonly
-                          v-on="on"
-                        ></v-text-field>
-                      </template>
-                      <v-date-picker
-                        locale="it-it"
-                        v-model="contactDetails.birthdate"
-                        @input="menu = false"
-                      >
-                      </v-date-picker>
-                    </v-menu>
-                  </v-flex>
-                </v-layout>
-              </v-container>
+                    </v-date-picker>
+                  </v-menu>
+                </v-flex>
+              </v-layout>
+            </v-container>
           </v-card>
           <v-btn block color="success" @click="currentStep = 2">Continua</v-btn>
         </v-stepper-content>
@@ -257,7 +260,8 @@
               <v-flex>
                 <v-text-field
                   v-if="
-                    payment.whereTo == 'pec' && payment.fatturaElettronica == '1'
+                    payment.whereTo == 'pec' &&
+                      payment.fatturaElettronica == '1'
                   "
                   v-model="payment.pec"
                   prepend-icon="mdi-map-marker"
@@ -281,7 +285,9 @@
             <v-radio-group v-model="payment.metodoPagamento">
               <v-radio label="Bonifico Bancario" value="bonifico"></v-radio>
             </v-radio-group>
-            <v-btn block color="success" @click="currentStep = 6">Continua</v-btn>
+            <v-btn block color="success" @click="currentStep = 6"
+              >Continua</v-btn
+            >
           </v-card>
         </v-stepper-content>
 
@@ -439,10 +445,10 @@
               ></v-checkbox>
               <span style="font-size: smaller;">
                 Ai Sensi del GDPR 2016/679 Ti informiamo che tratteremo questi
-                dati al solo scopo di procedere alla pre-registrazione al servizio
-                e per comunicare con te relativamente all'attivazione e
-                configurazione dello stesso. Se non completerai il processo entro
-                30 giorni, li cancelleremo automaticamente.
+                dati al solo scopo di procedere alla pre-registrazione al
+                servizio e per comunicare con te relativamente all'attivazione e
+                configurazione dello stesso. Se non completerai il processo
+                entro 30 giorni, li cancelleremo automaticamente.
               </span>
             </v-flex>
 
@@ -454,10 +460,10 @@
               ></v-checkbox>
               <span style="font-size: smaller;">
                 Ai Sensi del GDPR 2016/679 Ti informiamo che tratteremo questi
-                dati al solo scopo di procedere alla pre-registrazione al servizio
-                e per comunicare con te relativamente all'attivazione e
-                configurazione dello stesso. Se non completerai il processo entro
-                30 giorni, li cancelleremo automaticamente.
+                dati al solo scopo di procedere alla pre-registrazione al
+                servizio e per comunicare con te relativamente all'attivazione e
+                configurazione dello stesso. Se non completerai il processo
+                entro 30 giorni, li cancelleremo automaticamente.
               </span>
             </v-flex>
 
@@ -468,10 +474,10 @@
               ></v-checkbox>
               <span style="font-size: smaller;">
                 Ai Sensi del GDPR 2016/679 Ti informiamo che tratteremo questi
-                dati al solo scopo di procedere alla pre-registrazione al servizio
-                e per comunicare con te relativamente all'attivazione e
-                configurazione dello stesso. Se non completerai il processo entro
-                30 giorni, li cancelleremo automaticamente.
+                dati al solo scopo di procedere alla pre-registrazione al
+                servizio e per comunicare con te relativamente all'attivazione e
+                configurazione dello stesso. Se non completerai il processo
+                entro 30 giorni, li cancelleremo automaticamente.
               </span>
             </v-flex>
           </v-layout>
@@ -496,7 +502,7 @@
         color="red"
         indeterminate
       ></v-progress-circular>
-      <br>
+      <br />
       <p>Stiamo elaborando i tuoi dati</p>
     </v-layout>
 
@@ -808,7 +814,7 @@ export default {
                 window.location.href = location.origin;
               }, 3000);
             }
-            console.log("Response", response.data);
+            console.log("Response", response);
           })
           .catch(function(error) {
             // handle error
