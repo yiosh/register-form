@@ -23,12 +23,14 @@
                     v-model="contactDetails.name"
                     prepend-icon="mdi-account"
                     label="Nome"
+                    :rules="requiredRules"
                     required
                   ></v-text-field>
                   <v-text-field
                     v-model="contactDetails.lastname"
                     prepend-icon="mdi-account"
                     label="Cognome"
+                    :rules="requiredRules"
                     required
                   ></v-text-field>
                   <v-text-field
@@ -45,6 +47,7 @@
                     v-model="contactDetails.phone"
                     prepend-icon="mdi-cellphone"
                     label="Telefono"
+                    :rules="requiredRules"
                     required
                   ></v-text-field>
 
@@ -52,6 +55,7 @@
                     v-model="contactDetails.codiceFiscale"
                     prepend-icon="mdi-account-card-details"
                     label="Codice Fiscale"
+                    :rules="requiredRules"
                     required
                   ></v-text-field>
 
@@ -117,6 +121,7 @@
                       v-model="companyDetails.companyName"
                       prepend-icon="mdi-account"
                       label="Nome dell'azienda"
+                      :rules="requiredRules"
                       required
                     ></v-text-field>
 
@@ -124,6 +129,7 @@
                       v-model="companyDetails.piva"
                       prepend-icon="mdi-file-document-box"
                       label="P.IVA"
+                      :rules="requiredRules"
                       required
                     ></v-text-field>
 
@@ -131,6 +137,7 @@
                       v-model="companyDetails.codiceFiscale"
                       prepend-icon="mdi-file-document-box"
                       label="Codice Fiscale"
+                      :rules="requiredRules"
                       required
                     ></v-text-field>
 
@@ -138,6 +145,7 @@
                       v-model="companyDetails.phone"
                       prepend-icon="mdi-phone"
                       label="Telefono"
+                      :rules="requiredRules"
                       required
                     ></v-text-field>
 
@@ -145,6 +153,7 @@
                       v-model="companyDetails.email"
                       prepend-icon="mdi-email"
                       label="E-mail"
+                      :rules="requiredRules"
                       required
                     ></v-text-field>
 
@@ -152,6 +161,7 @@
                       v-model="companyDetails.pec"
                       prepend-icon="mdi-email"
                       label="PEC"
+                      :rules="requiredRules"
                       required
                     ></v-text-field>
                   </v-flex>
@@ -203,6 +213,7 @@
                       v-model="companyDetails.cap"
                       prepend-icon="mdi-map-marker"
                       label="CAP"
+                      :rules="requiredRules"
                       required
                     ></v-text-field>
 
@@ -211,6 +222,7 @@
                       v-model="companyDetails.address"
                       prepend-icon="mdi-map-marker"
                       label="Indirizzo Sede Legale"
+                      :rules="requiredRules"
                       required
                     ></v-text-field>
 
@@ -218,7 +230,6 @@
                       v-model="companyDetails.website"
                       prepend-icon="mdi-web"
                       label="Sito Web"
-                      required
                     ></v-text-field>
                   </v-flex>
                 </v-layout>
@@ -266,6 +277,7 @@
                   v-model="payment.pec"
                   prepend-icon="mdi-map-marker"
                   label="Inserisci PEC"
+                  :rules="requiredRules"
                   required
                 ></v-text-field>
                 <v-text-field
@@ -424,7 +436,7 @@
             <v-flex>
               <v-checkbox
                 v-model="privacy.accettazione_condizioni_del_servizio"
-                :rules="[v => !!v || 'Richiesto']"
+                :rules="[v => !!v || 'Obbligatorio']"
                 label="Accetto le condizioni generali del servizio."
                 required
               ></v-checkbox>
@@ -439,7 +451,7 @@
             <v-flex>
               <v-checkbox
                 v-model="privacy.gdpr_consenso_trattamento1"
-                :rules="[v => !!v || 'Richiesto']"
+                :rules="[v => !!v || 'Obbligatorio']"
                 label="Accetto il consenso al trattamento ai fini della registrazione."
                 required
               ></v-checkbox>
@@ -579,11 +591,15 @@ export default {
           text: "Forma3"
         }
       ],
+      requiredRules: [v => !!v || "Obbligatorio"],
       nameRules: [
         v => !!v || "Name is required",
         v => v.length <= 10 || "Name must be less than 10 characters"
       ],
-      codiceSdiRule: [v => v.length <= 7 || "Massimo 7 caratteri"],
+      codiceSdiRule: [
+        v => v.length <= 7 || "Massimo 7 caratteri",
+        v => !!v || "Obbligatorio"
+      ],
       emailRules: [
         v => !!v || "Email obbligatoria",
         v => /.+@.+/.test(v) || "L'email deve essere valida"
