@@ -443,70 +443,85 @@
           </v-flex>
         </v-layout>
 
-        <h3>Condizioni Generali del Servizio</h3>
-        <v-layout class="ml-3" wrap>
-          <v-flex>
-            <v-checkbox
-              v-model="privacy.accettazione_condizioni_del_servizio"
-              :rules="[v => !!v || 'Obbligatorio']"
-              label="Accetto le condizioni generali del servizio."
-              required
-            ></v-checkbox>
-            <span style="font-size: smaller;">
-              Leggi le condizioni generali del servizio prima di procedere.
-            </span>
-          </v-flex>
-        </v-layout>
+        <v-form ref="privacyForm" v-model="valid.privacy">
+          <h3>Condizioni Generali del Servizio</h3>
+          <v-layout class="ml-3" wrap>
+            <v-flex>
+              <v-checkbox
+                v-model="privacy.accettazione_condizioni_del_servizio"
+                :rules="[
+                  v =>
+                    !!v || 'Devi accettare le Condizioni Generali del Servizio'
+                ]"
+                label="Accetto le condizioni generali del servizio."
+                required
+              ></v-checkbox>
+              <span style="font-size: smaller;">
+                Leggi le condizioni generali del servizio prima di procedere.
+              </span>
+            </v-flex>
+          </v-layout>
 
-        <h3 style="margin-top: 1em;">Privacy</h3>
-        <v-layout class="ml-3" wrap>
-          <v-flex>
-            <v-checkbox
-              v-model="privacy.gdpr_consenso_trattamento1"
-              :rules="[v => !!v || 'Obbligatorio']"
-              label="Accetto il consenso al trattamento ai fini della registrazione."
-              required
-            ></v-checkbox>
-            <span style="font-size: smaller;">
-              Ai Sensi del GDPR 2016/679 Ti informiamo che tratteremo questi
-              dati al solo scopo di procedere alla pre-registrazione al servizio
-              e per comunicare con te relativamente all'attivazione e
-              configurazione dello stesso. Se non completerai il processo entro
-              30 giorni, li cancelleremo automaticamente.
-            </span>
-          </v-flex>
+          <h3 style="margin-top: 1em;">Privacy</h3>
+          <v-layout class="ml-3" wrap>
+            <v-flex>
+              <v-checkbox
+                v-model="privacy.gdpr_consenso_trattamento1"
+                :rules="[
+                  v =>
+                    !!v ||
+                    'Devi accettare il consenso al trattamento ai fini della registrazione'
+                ]"
+                label="Accetto il consenso al trattamento ai fini della registrazione."
+                required
+              ></v-checkbox>
+              <span style="font-size: smaller;">
+                Ai Sensi del GDPR 2016/679 Ti informiamo che tratteremo questi
+                dati al solo scopo di procedere alla pre-registrazione al
+                servizio e per comunicare con te relativamente all'attivazione e
+                configurazione dello stesso. Se non completerai il processo
+                entro 30 giorni, li cancelleremo automaticamente.
+              </span>
+            </v-flex>
 
-          <v-flex>
-            <v-checkbox
-              v-model="privacy.gdpr_consenso_trattamento2"
-              label="Accetto il consenso al trattamento ai fini delle comunicazioni
+            <v-flex>
+              <v-checkbox
+                v-model="privacy.gdpr_consenso_trattamento2"
+                label="Accetto il consenso al trattamento ai fini delle comunicazioni
             promozionali/marketing."
-            ></v-checkbox>
-            <span style="font-size: smaller;">
-              Ai Sensi del GDPR 2016/679 Ti informiamo che tratteremo questi
-              dati al solo scopo di procedere alla pre-registrazione al servizio
-              e per comunicare con te relativamente all'attivazione e
-              configurazione dello stesso. Se non completerai il processo entro
-              30 giorni, li cancelleremo automaticamente.
-            </span>
-          </v-flex>
+              ></v-checkbox>
+              <span style="font-size: smaller;">
+                Ai Sensi del GDPR 2016/679 Ti informiamo che tratteremo questi
+                dati al solo scopo di procedere alla pre-registrazione al
+                servizio e per comunicare con te relativamente all'attivazione e
+                configurazione dello stesso. Se non completerai il processo
+                entro 30 giorni, li cancelleremo automaticamente.
+              </span>
+            </v-flex>
 
-          <v-flex>
-            <v-checkbox
-              v-model="privacy.gdpr_consenso_trattamento3"
-              label="Accetto il consenso al trattamento ai fini della profilazione."
-            ></v-checkbox>
-            <span style="font-size: smaller;">
-              Ai Sensi del GDPR 2016/679 Ti informiamo che tratteremo questi
-              dati al solo scopo di procedere alla pre-registrazione al servizio
-              e per comunicare con te relativamente all'attivazione e
-              configurazione dello stesso. Se non completerai il processo entro
-              30 giorni, li cancelleremo automaticamente.
-            </span>
-          </v-flex>
-        </v-layout>
+            <v-flex>
+              <v-checkbox
+                v-model="privacy.gdpr_consenso_trattamento3"
+                label="Accetto il consenso al trattamento ai fini della profilazione."
+              ></v-checkbox>
+              <span style="font-size: smaller;">
+                Ai Sensi del GDPR 2016/679 Ti informiamo che tratteremo questi
+                dati al solo scopo di procedere alla pre-registrazione al
+                servizio e per comunicare con te relativamente all'attivazione e
+                configurazione dello stesso. Se non completerai il processo
+                entro 30 giorni, li cancelleremo automaticamente.
+              </span>
+            </v-flex>
+          </v-layout>
+        </v-form>
 
-        <v-btn block dark class="mt-5" color="#d21919" @click="handleSubmit">
+        <v-btn
+          block
+          dark
+          class="mt-5"
+          color="#d21919"
+          @click="handleStep('Riepilogo Dati')"
+        >
           Conferma
         </v-btn>
       </v-stepper-content>
@@ -565,7 +580,8 @@ export default {
       valid: {
         contatto: true,
         azienda: true,
-        fatturazione: true
+        fatturazione: true,
+        privacy: true
       },
       editable: {
         contatto: false,
@@ -577,7 +593,7 @@ export default {
         nome: [v => !!v || "Nome obbligatorio"],
         cognome: [v => !!v || "Cognome obbligatorio"],
         telefono: [v => !!v || "Telefono obbligatorio"],
-        codiceFiscale: [v => !!v || "Nome obbligatorio"],
+        codiceFiscale: [v => !!v || "Codice Fiscale obbligatorio"],
         codiceSdi: [
           v => v.length <= 7 || "Massimo 7 caratteri",
           v => !!v || "Obbligatorio"
@@ -629,7 +645,7 @@ export default {
         codiceFiscale: ""
       },
       companyDetails: {
-        formaGiuridica: "Societ\u00e0",
+        formaGiuridica: "",
         companyName: "",
         piva: "",
         codiceFiscale: "",
@@ -689,11 +705,18 @@ export default {
       }
 
       if (stepName == "Fatturazione" && this.valid.fatturazione) {
+        this.$refs.privacyForm.resetValidation();
         this.currentStep = 4;
         this.editable.fatturazione = true;
         this.editable.riepilogoDati = true;
       } else {
         this.$refs.fatturazioneForm.validate();
+      }
+
+      if (stepName == "Riepilogo Dati" && this.valid.privacy) {
+        this.handleSubmit();
+      } else {
+        this.$refs.privacyForm.validate();
       }
     },
     formatDate(date) {
@@ -724,11 +747,12 @@ export default {
           console.log(response);
         });
     },
-    handleStateChange() {
+    handleFormaGiuridica() {
       axios
         .get("https://mysql.condivision.cloud/data/?tag=forma_giuridica")
         .then(response => {
           this.formaGiuridica = response.data;
+          this.companyDetails.formaGiuridica = this.formaGiuridica[0].content;
           // this.loaders.region = false;
           // this.disabled.provinces = false;
           console.log(response);
@@ -814,49 +838,38 @@ export default {
         this.formData.set("pec_destinatario", this.payment.pec);
       }
 
-      if (
-        this.privacy.accettazione_condizioni_del_servizio &&
-        this.privacy.gdpr_consenso_trattamento1
-      ) {
-        this.progress = true;
-        axios
-          .post(
-            location.hostname == "localhost"
-              ? "//secure.1x2live.it/fl_api/"
-              : "//" + location.hostname + "/fl_api/",
-            this.formData,
-            {
-              headers: {
-                "Content-Type": "multipart/form-data"
-              }
+      this.progress = true;
+      axios
+        .post(
+          location.hostname == "localhost"
+            ? "//secure.1x2live.it/fl_api/"
+            : "//" + location.hostname + "/fl_api/",
+          this.formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data"
             }
-          )
-          .then(response => {
-            if (response.data.esito == "OK") {
-              this.progress = false;
-              this.formSuccess = true;
+          }
+        )
+        .then(response => {
+          if (response.data.esito == "OK") {
+            this.progress = false;
+            this.formSuccess = true;
 
-              setTimeout(() => {
-                window.location.href = location.origin;
-              }, 3000);
-            }
-            console.log("Response", response);
-          })
-          .catch(function(error) {
-            // handle error
-            console.log(error);
-          });
-      } else if (!this.privacy.accettazione_condizioni_del_servizio) {
-        alert("Devi accettare le Condizioni Generali del Servizio");
-      } else if (!this.privacy.gdpr_consenso_trattamento1) {
-        alert(
-          "Devi accettare il consenso al trattamento ai fini della registrazione"
-        );
-      }
+            setTimeout(() => {
+              window.location.href = location.origin;
+            }, 3000);
+          }
+          console.log("Response", response);
+        })
+        .catch(function(error) {
+          // handle error
+          console.log(error);
+        });
     }
   },
   created() {
-    this.handleStateChange();
+    this.handleFormaGiuridica();
     axios
       .get("https://mysql.condivision.cloud/countries/regions/?country=it")
       .then(response => {
