@@ -253,59 +253,68 @@
       >
       <v-stepper-content step="3">
         <v-card class="mb-3" flat>
-          <v-layout wrap>
-            <v-flex>
-              <h3>Sei soggetto a fatturazione elettronica?</h3>
-              <v-radio-group v-model="payment.fatturaElettronica">
-                <v-radio label="Si" value="1"></v-radio>
-                <v-radio label="No" value="0"></v-radio>
-              </v-radio-group>
-            </v-flex>
-            <v-flex>
-              <h3 v-if="payment.fatturaElettronica == '1'">
-                Come vuoi ricevere la fattura?
-              </h3>
-              <v-radio-group
-                v-if="payment.fatturaElettronica == '1'"
-                v-model="payment.whereTo"
-              >
-                <v-radio label="PEC" value="pec"></v-radio>
-                <v-radio label="Codice SDI" value="codice_sdi"></v-radio>
-              </v-radio-group>
-            </v-flex>
-            <v-flex>
-              <v-text-field
-                v-if="
-                  payment.whereTo == 'pec' && payment.fatturaElettronica == '1'
-                "
-                v-model="payment.pec"
-                prepend-icon="mdi-map-marker"
-                label="Inserisci PEC"
-                :rules="requiredRules"
-                required
-              ></v-text-field>
-              <v-text-field
-                v-if="
-                  payment.whereTo == 'codice_sdi' &&
-                    payment.fatturaElettronica == '1'
-                "
-                v-model="payment.codice_sdi"
-                :rules="rules.codiceSdi"
-                prepend-icon="mdi-map-marker"
-                label="Inserisci codice SDI"
-                required
-              ></v-text-field>
-            </v-flex>
-          </v-layout>
-          <h3>Come vuoi pagare?</h3>
-          <v-radio-group v-model="payment.metodoPagamento">
-            <v-radio label="Bonifico Bancario" value="bonifico"></v-radio>
-          </v-radio-group>
-          <v-btn block color="success" @click="handleStep('Fatturazione')">Continua</v-btn>
+          <v-form ref="fatturazioneForm" v-model="valid.fatturazione">
+            <v-layout wrap>
+              <v-flex>
+                <h3>Sei soggetto a fatturazione elettronica?</h3>
+                <v-radio-group v-model="payment.fatturaElettronica">
+                  <v-radio label="Si" value="1"></v-radio>
+                  <v-radio label="No" value="0"></v-radio>
+                </v-radio-group>
+              </v-flex>
+              <v-flex>
+                <h3 v-if="payment.fatturaElettronica == '1'">
+                  Come vuoi ricevere la fattura?
+                </h3>
+                <v-radio-group
+                  v-if="payment.fatturaElettronica == '1'"
+                  v-model="payment.whereTo"
+                >
+                  <v-radio label="PEC" value="pec"></v-radio>
+                  <v-radio label="Codice SDI" value="codice_sdi"></v-radio>
+                </v-radio-group>
+              </v-flex>
+              <v-flex>
+                <v-text-field
+                  v-if="
+                    payment.whereTo == 'pec' &&
+                      payment.fatturaElettronica == '1'
+                  "
+                  v-model="payment.pec"
+                  prepend-icon="mdi-map-marker"
+                  label="Inserisci PEC"
+                  :rules="rules.pec"
+                  required
+                ></v-text-field>
+                <v-text-field
+                  v-if="
+                    payment.whereTo == 'codice_sdi' &&
+                      payment.fatturaElettronica == '1'
+                  "
+                  v-model="payment.codice_sdi"
+                  :rules="rules.codiceSdi"
+                  prepend-icon="mdi-map-marker"
+                  label="Inserisci codice SDI"
+                  required
+                ></v-text-field>
+              </v-flex>
+            </v-layout>
+            <h3>Come vuoi pagare?</h3>
+            <v-radio-group v-model="payment.metodoPagamento">
+              <v-radio label="Bonifico Bancario" value="bonifico"></v-radio>
+            </v-radio-group>
+            <v-btn block color="success" @click="handleStep('Fatturazione')"
+              >Continua</v-btn
+            >
+          </v-form>
         </v-card>
       </v-stepper-content>
 
-      <v-stepper-step color="#d21919" :editable="editable.riepilogoDati" step="4">
+      <v-stepper-step
+        color="#d21919"
+        :editable="editable.riepilogoDati"
+        step="4"
+      >
         Riepilogo Dati
       </v-stepper-step>
       <v-stepper-content step="4">
@@ -358,7 +367,7 @@
             <p>{{ companyDetails.address }}</p>
 
             <h5>Stato:</h5>
-            <p>{{companyDetails.state}}</p>
+            <p>{{ companyDetails.state }}</p>
 
             <h5>Codice Fiscale:</h5>
             <p>{{ companyDetails.codiceFiscale }}</p>
@@ -555,7 +564,8 @@ export default {
     return {
       valid: {
         contatto: true,
-        azienda: true
+        azienda: true,
+        fatturazione: true
       },
       editable: {
         contatto: false,
@@ -564,18 +574,10 @@ export default {
         riepilogoDati: false
       },
       rules: {
-        nome: [
-          v => !!v || "Nome obbligatorio"
-        ],
-        cognome: [
-          v => !!v || "Cognome obbligatorio"
-        ],
-        telefono: [
-          v => !!v || "Telefono obbligatorio"
-        ],
-        codiceFiscale: [
-          v => !!v || "Nome obbligatorio"
-        ],
+        nome: [v => !!v || "Nome obbligatorio"],
+        cognome: [v => !!v || "Cognome obbligatorio"],
+        telefono: [v => !!v || "Telefono obbligatorio"],
+        codiceFiscale: [v => !!v || "Nome obbligatorio"],
         codiceSdi: [
           v => v.length <= 7 || "Massimo 7 caratteri",
           v => !!v || "Obbligatorio"
@@ -584,30 +586,14 @@ export default {
           v => !!v || "Email obbligatoria",
           v => /.+@.+/.test(v) || "L'email deve essere valida"
         ],
-        nomeAzienda: [
-          v => !!v || "Nome dell'azienda obbligatorio"
-        ],
-        piva: [
-          v => !!v || "P.IVA obbligatoria"
-        ],
-        pec: [
-          v => !!v || "PEC obbligatorio"
-        ],
-        cap: [
-          v => !!v || "CAP obbligatorio"
-        ],
-        indirizzoSede: [
-          v => !!v || "Indirizzo sede legale obbligatorio"
-        ],
-        regione: [
-          v => !!v || "Regione obbligatorio"
-        ],
-        provincia: [
-          v => !!v || "Provincia obbligatorio"
-        ],
-        comune: [
-          v => !!v || "Comune obbligatorio"
-        ],
+        nomeAzienda: [v => !!v || "Nome dell'azienda obbligatorio"],
+        piva: [v => !!v || "P.IVA obbligatoria"],
+        pec: [v => !!v || "PEC obbligatorio"],
+        cap: [v => !!v || "CAP obbligatorio"],
+        indirizzoSede: [v => !!v || "Indirizzo sede legale obbligatorio"],
+        regione: [v => !!v || "Regione obbligatorio"],
+        provincia: [v => !!v || "Provincia obbligatorio"],
+        comune: [v => !!v || "Comune obbligatorio"]
       },
       origin: location.origin,
       counter: 3,
@@ -695,16 +681,19 @@ export default {
       }
 
       if (stepName == "Azienda" && this.valid.azienda) {
+        this.$refs.fatturazioneForm.resetValidation();
         this.currentStep = 3;
         this.editable.azienda = true;
       } else {
         this.$refs.aziendaForm.validate();
       }
 
-      if (stepName == "Fatturazione") {
+      if (stepName == "Fatturazione" && this.valid.fatturazione) {
         this.currentStep = 4;
         this.editable.fatturazione = true;
         this.editable.riepilogoDati = true;
+      } else {
+        this.$refs.fatturazioneForm.validate();
       }
     },
     formatDate(date) {
