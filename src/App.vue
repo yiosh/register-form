@@ -51,7 +51,7 @@ export default {
 <style>
 #inspire {
   font-family: "Montserrat", sans-serif !important;
-  background-color: #f5f5f5;
+  background-color: rgb(245, 245, 245) !important;
 }
 
 .theme--light.application {
