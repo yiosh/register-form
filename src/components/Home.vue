@@ -56,7 +56,15 @@
                     required
                   ></v-text-field>
 
-                  <v-menu
+                  <v-text-field
+                    v-model="contactDetails.birthdate"
+                    prepend-icon="event"
+                    label="Data di Nascita"
+                    required
+                    type="date"
+                  ></v-text-field>
+
+                  <!-- <v-menu
                     ref="menu"
                     v-model="menu"
                     :close-on-content-click="false"
@@ -83,7 +91,7 @@
                       @input="menu = false"
                     >
                     </v-date-picker>
-                  </v-menu>
+                  </v-menu> -->
                 </v-flex>
               </v-layout>
             </v-container>

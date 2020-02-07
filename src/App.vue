@@ -7,10 +7,10 @@
       app
       color="white"
     >
-      <v-toolbar-title class="headline text-uppercase">
+      <!-- <v-toolbar-title class="headline text-uppercase">
         <span>{{ register }}</span>
         <span class="font-weight-light">su</span>
-      </v-toolbar-title>
+      </v-toolbar-title> -->
 
       <v-img
         :src="src"
@@ -38,12 +38,20 @@ export default {
   },
   data() {
     return {
-      src:
-        location.hostname == "localhost"
-          ? "//secure.1x2live.it/fl_config/secure.1x2live.it/img/logo.jpg"
-          : "/fl_app/registerForm/logo.jpg",
+      // src:
+      //   location.hostname === "localhost"
+      //     ? "//secure.1x2live.it/fl_config/secure.1x2live.it/img/logo.jpg"
+      //     : "/fl_app/registerForm/logo.jpg",
       register: "Registrati "
     };
+  },
+  computed: {
+    src() {
+      if (location.hostname === "localhost") {
+        return "https://secure.1x2live.it/fl_app/registerForm/logo.jpg";
+      }
+      return "/fl_app/registerForm/logo.jpg";
+    }
   }
 };
 </script>
