@@ -18,7 +18,7 @@
     </v-toolbar>
 
     <v-content>
-      <v-dialog v-model="dialog" width="700">
+      <!-- <v-dialog v-model="dialog" width="700">
         <template v-slot:activator="{ on }">
           <v-btn color="red lighten-2" dark v-on="on">Click Me</v-btn>
         </template>
@@ -96,14 +96,26 @@
             <v-btn color="primary" :disabled="enableButton" flat @click="dialog = false">I accept</v-btn>
           </v-card-actions>
         </v-card>
-      </v-dialog>
+      </v-dialog>-->
       <Form />
     </v-content>
+    <v-footer style="height: auto; text-align: center;">
+      <v-layout>
+        <v-flex>
+          <p class="mb-0 mt-4">{{ this.footerContent.ragione_sociale }}</p>
+          <p
+            class="mb-0"
+          >{{ this.footerContent.sede_legale }} {{ this.footerContent.provincia }} {{ this.footerContent.citta }} {{ this.footerContent.cap }}</p>
+          <p>P.IVA {{ this.footerContent.partita_iva }}</p>
+        </v-flex>
+      </v-layout>
+    </v-footer>
   </v-app>
 </template>
 
 <script>
 import Form from "./components/Form";
+import { CDNClient } from "@/cdnClient";
 
 export default {
   name: "App",
@@ -115,12 +127,12 @@ export default {
       dialog: false,
       enableButton: true,
       offsetTop: 0,
-      // src:
-      //   location.hostname === "localhost"
-      //     ? "//secure.1x2live.it/fl_config/secure.1x2live.it/img/logo.jpg"
-      //     : "/fl_app/registerForm/logo.jpg",
+      footerContent: null,
       register: "Registrati "
     };
+  },
+  created() {
+    this.getFooterContent();
   },
   computed: {
     src() {
@@ -157,6 +169,17 @@ export default {
     }
   },
   methods: {
+    getFooterContent() {
+      CDNClient.get(`/tenant/`)
+        .then(response => {
+          if (response.data.esito == "KO") {
+            alert(response.data.message);
+          } else {
+            this.footerContent = response.data.dati[0];
+          }
+        })
+        .catch(error => alert(error));
+    },
     onScroll(e) {
       this.offsetTop = e.target.scrollTop;
     }
