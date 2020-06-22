@@ -3,6 +3,6 @@ module.exports = {
   //   disableHostCheck: true
   // },
   publicPath:
-    process.env.NODE_ENV === "production" ? "/fl_app/registerForm/" : "/",
+    process.env.NODE_ENV === "production" ? "/app/registrazione" : "/",
   indexPath: "index.php"
 };

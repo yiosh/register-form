@@ -7,8 +7,7 @@
         :editable="editable.contatto"
         :complete="currentStep > 1"
         step="1"
-        >Contatto</v-stepper-step
-      >
+      >Contatto</v-stepper-step>
 
       <v-stepper-content step="1">
         <v-card class="mb-3" flat>
@@ -91,15 +90,13 @@
                       @input="menu = false"
                     >
                     </v-date-picker>
-                  </v-menu> -->
+                  </v-menu>-->
                 </v-flex>
               </v-layout>
             </v-container>
           </v-form>
         </v-card>
-        <v-btn block color="success" @click="handleStep('Contatto')"
-          >Continua</v-btn
-        >
+        <v-btn block color="success" @click="handleStep('Contatto')">Continua</v-btn>
       </v-stepper-content>
 
       <v-stepper-step
@@ -107,8 +104,7 @@
         :editable="editable.azienda"
         :complete="currentStep > 2"
         step="2"
-        >Azienda</v-stepper-step
-      >
+      >Azienda</v-stepper-step>
 
       <v-stepper-content step="2">
         <v-card class="mb-3" flat>
@@ -247,9 +243,7 @@
             </v-container>
           </v-form>
         </v-card>
-        <v-btn block color="success" @click="handleStep('Azienda')"
-          >Continua</v-btn
-        >
+        <v-btn block color="success" @click="handleStep('Azienda')">Continua</v-btn>
       </v-stepper-content>
 
       <v-stepper-step
@@ -257,8 +251,7 @@
         :editable="editable.fatturazione"
         :complete="currentStep > 3"
         step="3"
-        >Fatturazione</v-stepper-step
-      >
+      >Fatturazione</v-stepper-step>
       <v-stepper-content step="3">
         <v-card class="mb-3" flat>
           <v-form ref="fatturazioneForm" v-model="valid.fatturazione">
@@ -271,13 +264,8 @@
                 </v-radio-group>
               </v-flex>
               <v-flex>
-                <h3 v-if="payment.fatturaElettronica == '1'">
-                  Come vuoi ricevere la fattura?
-                </h3>
-                <v-radio-group
-                  v-if="payment.fatturaElettronica == '1'"
-                  v-model="payment.whereTo"
-                >
+                <h3 v-if="payment.fatturaElettronica == '1'">Come vuoi ricevere la fattura?</h3>
+                <v-radio-group v-if="payment.fatturaElettronica == '1'" v-model="payment.whereTo">
                   <v-radio label="PEC" value="pec"></v-radio>
                   <v-radio label="Codice SDI" value="codice_sdi"></v-radio>
                 </v-radio-group>
@@ -311,20 +299,12 @@
             <v-radio-group v-model="payment.metodoPagamento">
               <v-radio label="Bonifico Bancario" value="bonifico"></v-radio>
             </v-radio-group>
-            <v-btn block color="success" @click="handleStep('Fatturazione')"
-              >Continua</v-btn
-            >
+            <v-btn block color="success" @click="handleStep('Fatturazione')">Continua</v-btn>
           </v-form>
         </v-card>
       </v-stepper-content>
 
-      <v-stepper-step
-        color="#d21919"
-        :editable="editable.riepilogoDati"
-        step="4"
-      >
-        Riepilogo Dati
-      </v-stepper-step>
+      <v-stepper-step color="#d21919" :editable="editable.riepilogoDati" step="4">Riepilogo Dati</v-stepper-step>
       <v-stepper-content step="4">
         <h3 class="mb-3">Dettagli del Contatto</h3>
         <v-layout class="ml-3" wrap>
@@ -401,12 +381,8 @@
         <h3 class="mb-3">Detagli di Fatturazione</h3>
         <v-layout class="ml-3" wrap>
           <v-flex md4>
-            <h5 v-if="payment.fatturaElettronica == '1'">
-              Come vuoi ricevere la fattura?
-            </h5>
-            <p v-if="payment.fatturaElettronica == '1'">
-              {{ payment.whereTo }}
-            </p>
+            <h5 v-if="payment.fatturaElettronica == '1'">Come vuoi ricevere la fattura?</h5>
+            <p v-if="payment.fatturaElettronica == '1'">{{ payment.whereTo }}</p>
 
             <h5
               v-if="
@@ -414,18 +390,14 @@
                   payment.whereTo == 'pec' &&
                   payment.fatturaElettronica == '1'
               "
-            >
-              PEC
-            </h5>
+            >PEC</h5>
             <p
               v-if="
                 payment.pec &&
                   payment.whereTo == 'pec' &&
                   payment.fatturaElettronica == '1'
               "
-            >
-              {{ payment.pec }}
-            </p>
+            >{{ payment.pec }}</p>
 
             <h5
               v-if="
@@ -433,18 +405,14 @@
                   payment.whereTo == 'codice_sdi' &&
                   payment.fatturaElettronica == '1'
               "
-            >
-              Codice SDI
-            </h5>
+            >Codice SDI</h5>
             <p
               v-if="
                 payment.codice_sdi &&
                   payment.whereTo == 'codice_sdi' &&
                   payment.fatturaElettronica == '1'
               "
-            >
-              {{ payment.codice_sdi }}
-            </p>
+            >{{ payment.codice_sdi }}</p>
 
             <h5>Come vuoi Pagare</h5>
             <p>{{ payment.metodoPagamento }}</p>
@@ -464,9 +432,9 @@
                 label="Accetto le condizioni generali del servizio."
                 required
               ></v-checkbox>
-              <span style="font-size: smaller;">
-                Leggi le condizioni generali del servizio prima di procedere.
-              </span>
+              <span
+                style="font-size: smaller;"
+              >Leggi le condizioni generali del servizio prima di procedere.</span>
             </v-flex>
           </v-layout>
 
@@ -529,49 +497,31 @@
           class="mt-5"
           color="#d21919"
           @click="handleStep('Riepilogo Dati')"
-        >
-          Conferma
-        </v-btn>
+        >Conferma</v-btn>
       </v-stepper-content>
     </v-stepper>
     <!-- </v-form> -->
 
-    <v-layout
-      v-if="progress && !formSuccess"
-      fill-height
-      align-center
-      justify-center
-      column
-    >
-      <v-progress-circular
-        :size="70"
-        :width="7"
-        color="red"
-        indeterminate
-      ></v-progress-circular>
+    <v-layout v-if="progress && !formSuccess" fill-height align-center justify-center column>
+      <v-progress-circular :size="70" :width="7" color="red" indeterminate></v-progress-circular>
       <br />
       <p>Stiamo elaborando i tuoi dati</p>
     </v-layout>
 
-    <v-layout
-      v-if="!progress && formSuccess"
-      fill-height
-      align-center
-      justify-center
-    >
+    <v-layout v-if="!progress && formSuccess" fill-height align-center justify-center>
       <v-card height="20em" width="25em" class="mx-auto">
         <v-card-title></v-card-title>
 
-        <v-card-text
-          style="text-align: center;"
-          class="headline font-weight-bold"
-        >
+        <v-card-text style="text-align: center;" class="headline font-weight-bold">
           <v-icon color="success" size="5em">mdi-check-bold</v-icon>
           <!-- <br /> -->
           <p>Procedura completata!</p>
           <p style="font-size: .5em;">
             Tra {{ counter }} secondi sarai reindirizzato alla
-            <a style="color: rgb(192, 0, 0);" :href="origin">piattaforma.</a>
+            <a
+              style="color: rgb(192, 0, 0);"
+              :href="origin"
+            >piattaforma.</a>
           </p>
         </v-card-text>
       </v-card>
