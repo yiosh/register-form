@@ -1,6 +1,8 @@
 <template>
   <v-stepper v-model="currentStep" vertical>
-    <v-stepper-step editable :complete="currentStep > 1" step="1">Contact Details</v-stepper-step>
+    <v-stepper-step editable :complete="currentStep > 1" step="1"
+      >Contact Details</v-stepper-step
+    >
 
     <v-stepper-content step="1">
       <v-card class="mb-3" flat>
@@ -69,14 +71,21 @@
                       v-on="on"
                     ></v-text-field>
                   </template>
-                  <v-date-picker v-model="contactDetails.birthdate" no-title scrollable>
+                  <v-date-picker
+                    v-model="contactDetails.birthdate"
+                    no-title
+                    scrollable
+                  >
                     <v-spacer></v-spacer>
-                    <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
+                    <v-btn flat color="primary" @click="menu = false"
+                      >Cancel</v-btn
+                    >
                     <v-btn
                       flat
                       color="primary"
                       @click="$refs.menu.save(contactDetails.birthdate)"
-                    >OK</v-btn>
+                      >OK</v-btn
+                    >
                   </v-date-picker>
                 </v-menu>
               </v-flex>
@@ -87,7 +96,9 @@
       <v-btn block color="success" @click="currentStep = 2">Continue</v-btn>
     </v-stepper-content>
 
-    <v-stepper-step editable :complete="currentStep > 2" step="2">Company Details</v-stepper-step>
+    <v-stepper-step editable :complete="currentStep > 2" step="2"
+      >Company Details</v-stepper-step
+    >
 
     <v-stepper-content step="2">
       <v-card class="mb-3" flat>
@@ -208,7 +219,9 @@
       <v-btn block color="success" @click="currentStep = 3">Continue</v-btn>
     </v-stepper-content>
 
-    <v-stepper-step editable :complete="currentStep > 3" step="3">Select Plan</v-stepper-step>
+    <v-stepper-step editable :complete="currentStep > 3" step="3"
+      >Select Plan</v-stepper-step
+    >
 
     <v-stepper-content step="3">
       <v-card class="mb-3" flat>
@@ -218,7 +231,9 @@
           </v-flex>
           <v-spacer></v-spacer>
           <v-flex xs12 md3 text-xs-center>
-            <v-btn block color="warning" large @click="handlePlanA">Plan A</v-btn>
+            <v-btn block color="warning" large @click="handlePlanA"
+              >Plan A</v-btn
+            >
           </v-flex>
           <v-spacer></v-spacer>
           <v-flex xs12 md3 text-xs-center>
@@ -289,24 +304,24 @@
       <v-layout class="ml-3" wrap>
         <v-flex xs12 md4>
           <h5>First name:</h5>
-          <p>{{contactDetails.name}}</p>
+          <p>{{ contactDetails.name }}</p>
 
           <h5>Last name:</h5>
-          <p>{{contactDetails.lastname}}</p>
+          <p>{{ contactDetails.lastname }}</p>
         </v-flex>
         <v-flex xs12 md4>
           <h5>Email:</h5>
-          <p>{{contactDetails.email}}</p>
+          <p>{{ contactDetails.email }}</p>
 
           <h5>Phone:</h5>
-          <p>{{contactDetails.phone}}</p>
+          <p>{{ contactDetails.phone }}</p>
         </v-flex>
         <v-flex xs12 md4>
           <h5>Birthday:</h5>
-          <p>{{contactDetails.birthdate}}</p>
+          <p>{{ contactDetails.birthdate }}</p>
 
           <h5>Codice Fiscale:</h5>
-          <p>{{contactDetails.codiceFiscale}}</p>
+          <p>{{ contactDetails.codiceFiscale }}</p>
         </v-flex>
       </v-layout>
 
@@ -314,45 +329,45 @@
       <v-layout class="ml-3" wrap>
         <v-flex xs12 md4>
           <h5>Company name:</h5>
-          <p>{{companyDetails.companyName}}</p>
+          <p>{{ companyDetails.companyName }}</p>
 
           <h5>P.IVA:</h5>
-          <p>{{companyDetails.piva}}</p>
+          <p>{{ companyDetails.piva }}</p>
 
           <h5>PEC:</h5>
-          <p>{{companyDetails.pec}}</p>
+          <p>{{ companyDetails.pec }}</p>
 
           <h5>Codice Fiscale:</h5>
-          <p>{{companyDetails.codiceFiscale}}</p>
+          <p>{{ companyDetails.codiceFiscale }}</p>
 
           <h5>Telefono:</h5>
-          <p>{{companyDetails.phone}}</p>
+          <p>{{ companyDetails.phone }}</p>
         </v-flex>
         <v-flex xs12 md4>
           <h5>Numero Civico:</h5>
-          <p>{{companyDetails.numeroCivico}}</p>
+          <p>{{ companyDetails.numeroCivico }}</p>
 
           <h5>Sito Web:</h5>
-          <p>{{companyDetails.website}}</p>
+          <p>{{ companyDetails.website }}</p>
 
           <h5>Indirizzo Sede Legale:</h5>
-          <p>{{companyDetails.address}}</p>
+          <p>{{ companyDetails.address }}</p>
 
           <h5>Stato:</h5>
-          <p>{{companyDetails.state}}</p>
+          <p>{{ companyDetails.state }}</p>
         </v-flex>
         <v-flex xs12 md4>
           <h5>Regione:</h5>
-          <p>{{companyDetails.region}}</p>
+          <p>{{ companyDetails.region }}</p>
 
           <h5>Provincia:</h5>
-          <p>{{companyDetails.province}}</p>
+          <p>{{ companyDetails.province }}</p>
 
           <h5>Città:</h5>
-          <p>{{companyDetails.city}}</p>
+          <p>{{ companyDetails.city }}</p>
 
           <h5>CAP:</h5>
-          <p>{{companyDetails.cap}}</p>
+          <p>{{ companyDetails.cap }}</p>
         </v-flex>
       </v-layout>
 
@@ -360,7 +375,7 @@
       <v-layout class="ml-3" wrap>
         <v-flex xs12 md4>
           <h5>Plan Selected</h5>
-          <p>{{planSelected}}</p>
+          <p>{{ planSelected }}</p>
         </v-flex>
       </v-layout>
 
@@ -368,14 +383,16 @@
       <v-layout class="ml-3" wrap>
         <v-flex md4>
           <h5>Come vuoi ricevere la fattura?</h5>
-          <p>{{payment.whereTo}}</p>
+          <p>{{ payment.whereTo }}</p>
 
           <h5>InfoPay</h5>
-          <p>{{payment.infopay}}</p>
+          <p>{{ payment.infopay }}</p>
         </v-flex>
       </v-layout>
 
-      <v-btn block class="mt-5" color="primary" @click="handleSubmit">Confirm</v-btn>
+      <v-btn block class="mt-5" color="primary" @click="handleSubmit"
+        >Confirm</v-btn
+      >
     </v-stepper-content>
   </v-stepper>
 </template>
